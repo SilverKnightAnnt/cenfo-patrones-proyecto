@@ -13,7 +13,7 @@ public class IU{
 	public static void main(String[] args)throws java.io.IOException{
 		
 		int opc;
-		boolean noSalir = true, create;
+		boolean noSalir = true;
 		
 		String[] listaMenu={"1. Crear cuenta",
 							"2. Iniciar sesión",

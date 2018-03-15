@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Implementation-Title: DuelistSpirit
 Implementation-Version: 0.0.1
-Built-By: Jose Salazar
+Built-By: User
 Implementation-Vendor-Id: com.cenfotec.patrones
-Build-Jdk: 1.8.0_162
+Build-Jdk: 1.8.0_151
 Implementation-URL: http://projects.spring.io/spring-boot/DuelistSpiri
  t/
 Created-By: Maven Integration for Eclipse
