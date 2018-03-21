@@ -1,14 +1,25 @@
 package com.cenfotec.patrones;
 
 public class Raza {
+	private int id_raza;
 	private String nombre;
-	private int punteria;
-	private int vida_max;
-	private int inteligencia;
-	private int magia;
 
 	public Raza() {
 
+	}
+
+	public Raza(int id_raza, String nombre) {
+		super();
+		this.id_raza = id_raza;
+		this.nombre = nombre;
+	}
+
+	public int getId_raza() {
+		return id_raza;
+	}
+
+	public void setId_raza(int id_raza) {
+		this.id_raza = id_raza;
 	}
 
 	public String getNombre() {
@@ -19,36 +30,8 @@ public class Raza {
 		this.nombre = nombre;
 	}
 
-	public int getPunteria() {
-		return punteria;
-	}
-
-	public void setPunteria(int punteria) {
-		this.punteria = punteria;
-	}
-
-	public int getVida_max() {
-		return vida_max;
-	}
-
-	public void setVida_max(int vida_max) {
-		this.vida_max = vida_max;
-	}
-
-	public int getInteligencia() {
-		return inteligencia;
-	}
-
-	public void setInteligencia(int inteligencia) {
-		this.inteligencia = inteligencia;
-	}
-
-	public int getMagia() {
-		return magia;
-	}
-
-	public void setMagia(int magia) {
-		this.magia = magia;
+	public void imprimirRaza() {
+		System.out.println(id_raza + " " + nombre);
 	}
 
 }

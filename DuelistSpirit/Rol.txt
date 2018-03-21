@@ -1,0 +1,4 @@
+1 Soldado
+2 Arquero
+3 Ladron
+4 Asesino

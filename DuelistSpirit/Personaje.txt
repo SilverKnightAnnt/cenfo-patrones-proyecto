@@ -1,0 +1,7 @@
+Daniel | M | Enano | Arquero | Alquemista | 
+Daniel | Masculino | Orco | Arquero | Alquemista | 
+asd | das | Enano | Ladron | Pescador | 
+Jauntio | Masculino | Enano | Asesino | Cazador | 
+Alien | M | Elfo | Asesino | Pescador | 
+asd | asd | Enano | Ladron | Herrero | 
+Prueba Final | Masculino | Enano | Ladron | Herrero | 

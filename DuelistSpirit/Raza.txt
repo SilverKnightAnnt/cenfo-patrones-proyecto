@@ -1,0 +1,4 @@
+1 Humano
+2 Enano
+3 Elfo
+4 Orco

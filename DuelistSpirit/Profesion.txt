@@ -1,0 +1,6 @@
+1 Alquemista
+2 Cazador
+3 Cocinero
+4 Herrero
+5 Pescador
+6 Granjero
