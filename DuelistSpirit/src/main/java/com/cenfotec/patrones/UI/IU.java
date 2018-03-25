@@ -17,8 +17,7 @@ public class IU {
 		int opc;
 		boolean noSalir = true;
 
-		String[] listaMenu = { "1. Crear cuenta", "2. Iniciar sesión", "3. Nueva partida", "4. Cargar partida",
-				"5. Salir" };
+		String[] listaMenu = { "1. Crear cuenta", "2. Iniciar sesión", "3. Salir" };
 
 		out.println("****************************************************************");
 		out.println("***************BIENVENIDO A DUELISTSPIRIT*************");
@@ -137,12 +136,15 @@ public class IU {
 		usuario.setContrasenna(in.readLine());
 
 		if (gu.iniciarSesion(usuario) == true) {
+			usuarioLogeado = usuario.getNombreUsuario();
 			menuInicioSesion();
 		} else {
 			out.println("\nNombre de usuario o contraseña incorrectos.\n");
 		}
 
 	}
+
+	static String usuarioLogeado;
 
 	public static void menuInicioSesion() throws NumberFormatException, IOException {
 
@@ -159,6 +161,7 @@ public class IU {
 				crearPersonaje();
 				break;
 			case 2:
+				cargarPartida();
 				break;
 			case 3:
 				break;
@@ -169,7 +172,7 @@ public class IU {
 		} while (opcion != 3);
 
 	}
-
+	
 	public static void crearPersonaje() throws IOException {
 		Personaje personaje = new Personaje();
 		Raza raza = new Raza();
@@ -181,7 +184,8 @@ public class IU {
 		GestorRol grol = new GestorRol();
 		GestorProfesion gprof = new GestorProfesion();
 
-		System.out.println("****CREACIÓN DEL DUELISTA***");
+		System.out.println("****CREACIÓN DEL DUELISTA***");		
+		personaje.setUsuario(usuarioLogeado);		
 		System.out.println("Nombre del duelista: ");
 		personaje.setNombre(in.readLine());
 		System.out.println("\nGenero del duelista: ");
@@ -257,5 +261,24 @@ public class IU {
 			System.out.println("---Profesiones---");
 			gprof.getProfesion();
 		}
+	}
+
+	public static void cargarPartida() {
+		GestorPersonaje gper = new GestorPersonaje();
+		Personaje personaje = new Personaje();
+		personaje.setUsuario(usuarioLogeado);
+		if (gper.buscarPersonaje(personaje) != null) {
+			System.out.println("---Personajes---\n");
+			for (Personaje personajeEncontrado : gper.buscarPersonaje(personaje)) {
+				System.out.println(personajeEncontrado.toString());
+			}
+			System.out.println("\nDigite el nombre del duelista para cargar:");
+
+		}
+	}
+
+	public static void cargarMapa() {
+		GestorMapa gmapa = new GestorMapa();
+		gmapa.getMapa();
 	}
 }
