@@ -1,6 +1,8 @@
 package com.cenfotec.patrones.gestores;
 
 import java.io.File;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.cenfotec.patrones.datostxt.MapaTexto;
 
@@ -15,8 +17,14 @@ public class GestorMapa {
 		return isEmpty;
 	}
 	
-	public void getMapa() {
+	public String[][] getMapa() {
 		MapaTexto mapa_txt = new MapaTexto();
-		mapa_txt.showMapa();
+		String[][] mapa = mapa_txt.showMapa();
+		return mapa;
+	}
+	
+	public void guardado(String pNombrePersonaje) {
+		MapaTexto mapa_txt = new MapaTexto();
+		mapa_txt.guardadoPartida(pNombrePersonaje);
 	}
 }

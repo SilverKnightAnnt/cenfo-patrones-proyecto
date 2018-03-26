@@ -1,6 +1,8 @@
 package com.cenfotec.patrones.UI;
 
 import java.io.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.cenfotec.patrones.entidades.*;
 import com.cenfotec.patrones.gestores.*;
@@ -263,7 +265,7 @@ public class IU {
 		}
 	}
 
-	public static void cargarPartida() {
+	public static void cargarPartida() throws IOException {
 		GestorPersonaje gper = new GestorPersonaje();
 		Personaje personaje = new Personaje();
 		personaje.setUsuario(usuarioLogeado);
@@ -273,12 +275,52 @@ public class IU {
 				System.out.println(personajeEncontrado.toString());
 			}
 			System.out.println("\nDigite el nombre del duelista para cargar:");
-
+			String nombrePersonaje = in.readLine();
+			cargarMapa(nombrePersonaje);
 		}
 	}
 
-	public static void cargarMapa() {
-		GestorMapa gmapa = new GestorMapa();
-		gmapa.getMapa();
+	public static void cargarMapa(String pNombrePersonaje) throws NumberFormatException, IOException {
+		GestorMapa gmapa = new GestorMapa();		
+		for (int i = 0; i < gmapa.getMapa().length; i++) {
+		    for (int j = 0; j < gmapa.getMapa()[i].length; j++) {
+		        System.out.print(gmapa.getMapa()[i][j] + " ");
+		    }
+		    System.out.println();
+		}      
+		
+				
+		int opcion = -1;
+		do {
+			System.out.println("---Opciones del mundo---\n");
+			System.out.println("1. Moverse.");
+			System.out.println("2. Guardar partida.");
+			System.out.println("3. Cargar partida.");
+			System.out.println("4. Salir.\n");
+			System.out.println("Seleccione su opción: ");
+			opcion = Integer.parseInt(in.readLine());
+
+			switch (opcion) {
+			case 1:
+				
+				break;
+			case 2:
+				guardarPartida(pNombrePersonaje);
+				break;
+			case 3:
+				break;
+			case 4:
+				break;
+			default:
+				out.println("Opción incorrecta.");
+
+			}
+		} while (opcion != 4);
+
+	}
+	
+	public static void guardarPartida(String pNombrePersonaje) {
+		GestorMapa gmapa = new GestorMapa();	
+		gmapa.guardado(pNombrePersonaje);
 	}
 }
