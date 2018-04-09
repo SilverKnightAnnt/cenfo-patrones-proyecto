@@ -55,7 +55,6 @@ public class GestorPersonaje {
 						lista.add(pos_personaje);	
 					}
 				}
-				bReader.close();
 				return lista;
 			}
 		} catch (IOException e) {
@@ -85,7 +84,6 @@ public class GestorPersonaje {
 						lista.add(pos_personaje);	
 					}
 				}
-				bReader.close();
 				return lista;
 				
 			}

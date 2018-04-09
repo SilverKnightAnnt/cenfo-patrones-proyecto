@@ -41,7 +41,6 @@ public class GestorProfesion {
 								datos_profesion[1]);						
 						return pos_profesion;
 					}
-					bReader.close();
 				}
 			}
 		} catch (IOException e) {

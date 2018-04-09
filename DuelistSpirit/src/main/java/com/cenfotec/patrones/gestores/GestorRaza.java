@@ -39,7 +39,6 @@ public class GestorRaza {
 						Raza pos_raza = new Raza(Integer.parseInt(datos_raza[0]), datos_raza[1]);
 						return pos_raza;
 					}
-					bReader.close();
 				}
 			}
 		} catch (IOException e) {

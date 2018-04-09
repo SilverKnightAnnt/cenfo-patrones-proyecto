@@ -30,7 +30,6 @@ public class GestorUsuario {
 						encontrado = true;
 					}
 				}
-				bReader.close();
 			}			
 
 		} catch (Exception ex) {
