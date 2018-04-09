@@ -4,6 +4,8 @@ import java.io.*;
 import java.util.ArrayList;
 
 import com.cenfotec.patrones.entidades.*;
+import com.cenfotec.patrones.fabricas.FabricaElementos;
+import com.cenfotec.patrones.fabricas.FabricaGestores;
 import com.cenfotec.patrones.gestores.*;
 
 public class IU {
@@ -82,10 +84,12 @@ public class IU {
 		return noSalir;
 	}
 
+	
+	
 	public static void crearCuenta() throws IOException {
 
-		Usuario usuario = new Usuario();
-		GestorUsuario gu = new GestorUsuario();
+		Usuario usuario = FabricaElementos.crearUsuario();
+		GestorUsuario gu = FabricaGestores.crearGestorUsuario();
 
 		out.println("Ingrese su correo electrónico: ");
 		usuario.setCorreo(in.readLine());
@@ -100,8 +104,8 @@ public class IU {
 
 	public static void iniciarSesion() throws Exception {
 
-		Usuario usuario = new Usuario();
-		GestorUsuario gu = new GestorUsuario();
+		Usuario usuario = FabricaElementos.crearUsuario();
+		GestorUsuario gu = FabricaGestores.crearGestorUsuario();
 		out.println("Ingrese su nombre de usuario: ");
 		usuario.setNombreUsuario(in.readLine());
 		out.println("Ingrese su contraseña: ");
@@ -146,15 +150,16 @@ public class IU {
 	}
 
 	public static void crearPersonaje() throws IOException {
-		Personaje personaje = new Personaje();
-		Raza raza = new Raza();
-		Rol rol = new Rol();
-		Profesion profesion = new Profesion();
+		
+		Personaje personaje = FabricaElementos.crearPersonaje();
+		Raza raza = FabricaElementos.crearRaza();
+		Rol rol = FabricaElementos.crearRol();
+		Profesion profesion = FabricaElementos.crearProfesion();
 
-		GestorPersonaje gp = new GestorPersonaje();
-		GestorRaza gr = new GestorRaza();
-		GestorRol grol = new GestorRol();
-		GestorProfesion gprof = new GestorProfesion();
+		GestorPersonaje gp = FabricaGestores.crearGestorPersonaje();
+		GestorRaza gr = FabricaGestores.crearGestorRaza();
+		GestorRol grol = FabricaGestores.crearGestorRol();
+		GestorProfesion gprof = FabricaGestores.crearGestorProfesion();
 
 		System.out.println("****CREACIÓN DEL DUELISTA***");
 		personaje.setUsuario(usuarioLogeado);
@@ -199,7 +204,7 @@ public class IU {
 	}
 
 	public static void listarRaza() throws IOException {
-		GestorRaza gr = new GestorRaza();
+		GestorRaza gr = FabricaGestores.crearGestorRaza();
 		boolean isEmpty = gr.isEmpty();
 
 		if (!isEmpty) {
@@ -212,7 +217,7 @@ public class IU {
 	}
 
 	public static void listarRol() throws IOException {
-		GestorRol grol = new GestorRol();
+		GestorRol grol = FabricaGestores.crearGestorRol();
 		boolean isEmpty = grol.isEmpty();
 
 		if (!isEmpty) {
@@ -224,7 +229,7 @@ public class IU {
 	}
 
 	public static void listarProfesion() throws IOException {
-		GestorProfesion gprof = new GestorProfesion();
+		GestorProfesion gprof = FabricaGestores.crearGestorProfesion();
 		boolean isEmpty = gprof.isEmpty();
 
 		if (!isEmpty) {
@@ -236,8 +241,8 @@ public class IU {
 	}
 
 	public static void cargarPartida() throws Exception {
-		GestorPersonaje gper = new GestorPersonaje();
-		Personaje personaje = new Personaje();
+		GestorPersonaje gper = FabricaGestores.crearGestorPersonaje();
+		Personaje personaje = FabricaElementos.crearPersonaje();
 		personaje.setUsuario(usuarioLogeado);
 		if (gper.buscarPersonajeUsuario(personaje) != null) {
 			System.out.println("---Personajes---\n");
@@ -257,7 +262,7 @@ public class IU {
 	}
 
 	public static void listarPartidasPersonaje(String pNombrePersonaje) throws Exception {
-		GestorMapa gmapa = new GestorMapa();
+		GestorMapa gmapa = FabricaGestores.crearGestorMapa();
 		ArrayList<String> listaPartidasExistentes = gmapa.listarCargasDisponibles(pNombrePersonaje);
 		if (listaPartidasExistentes != null) {
 			for (String partida : listaPartidasExistentes) {
@@ -272,7 +277,7 @@ public class IU {
 	}
 
 	public static void mostrarMapaCargado(String pNombrePersonaje, int pNumeroPartida) throws Exception {
-		GestorMapa gmapa = new GestorMapa();
+		GestorMapa gmapa = FabricaGestores.crearGestorMapa();
 		String[][] mapaCargado = gmapa.cargarPartida(pNombrePersonaje, pNumeroPartida);
 
 		if (mapaCargado != null) {
@@ -299,7 +304,7 @@ public class IU {
 
 		int posicionXActualPersonaje = -1;
 		int posicionYActualPersonaje = -1;
-		GestorMapa gmapa = new GestorMapa();
+		GestorMapa gmapa = FabricaGestores.crearGestorMapa();
 		String[][] mapaBase = gmapa.obtenerMapaBase();
 		for (int x = 0; x < mapaBase.length; x++) {
 			for (int y = 0; y < mapaBase[x].length; y++) {
@@ -373,7 +378,7 @@ public class IU {
 	}
 
 	public static void guardarPartida(String pNombrePersonaje) {
-		GestorMapa gmapa = new GestorMapa();
+		GestorMapa gmapa = FabricaGestores.crearGestorMapa();
 		gmapa.guardarPartida(pNombrePersonaje, mapaGenerado);
 	}
 }

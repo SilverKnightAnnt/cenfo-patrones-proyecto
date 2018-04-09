@@ -5,10 +5,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import com.cenfotec.patrones.datostxt.PersonajeTexto;
-import com.cenfotec.patrones.datostxt.ProfesionTexto;
 import com.cenfotec.patrones.entidades.Personaje;
+import com.cenfotec.patrones.fabricas.FabricaTextos;
 
 public class GestorPersonaje {
 	public GestorPersonaje() {
@@ -16,7 +15,7 @@ public class GestorPersonaje {
 	}
 
 	public void creacionPersonaje(Personaje personaje) {
-		PersonajeTexto dataPersonaje = new PersonajeTexto();
+		PersonajeTexto dataPersonaje = FabricaTextos.crearPersonajeTexto();
 		dataPersonaje.addPersonaje(personaje);
 
 	}
@@ -31,7 +30,7 @@ public class GestorPersonaje {
 	}
 	
 	public void getPersonaje() {
-		PersonajeTexto personaje_txt = new PersonajeTexto();
+		PersonajeTexto personaje_txt = FabricaTextos.crearPersonajeTexto();
 		personaje_txt.showPersonaje();
 	}
 
@@ -56,6 +55,7 @@ public class GestorPersonaje {
 						lista.add(pos_personaje);	
 					}
 				}
+				bReader.close();
 				return lista;
 			}
 		} catch (IOException e) {
@@ -69,7 +69,7 @@ public class GestorPersonaje {
 		try {			
 			File f = new File("Personaje.txt");
 			if (f.exists()) {
-				FileReader fReader = new FileReader(f);
+				FileReader fReader = new FileReader(f);				
 				BufferedReader bReader = new BufferedReader(fReader);
 				String linea;
 				
@@ -85,7 +85,9 @@ public class GestorPersonaje {
 						lista.add(pos_personaje);	
 					}
 				}
+				bReader.close();
 				return lista;
+				
 			}
 		} catch (IOException e) {
 			e.getMessage();

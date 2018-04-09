@@ -22,6 +22,7 @@ public class ProfesionTexto {
 					Profesion profesion = new Profesion(Integer.parseInt(datos_profesion[0]), datos_profesion[1]);
 					profesion.imprimirProfesion();
 				}
+				bReader.close();
 			}
 		} catch (Exception e) {
 			e.getMessage();

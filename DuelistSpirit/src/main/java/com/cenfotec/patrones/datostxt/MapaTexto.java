@@ -31,6 +31,7 @@ public class MapaTexto {
 					y = 0;
 					x++;
 				}
+				bReader.close();
 			}
 
 		} catch (Exception e) {
@@ -76,9 +77,11 @@ public class MapaTexto {
 					y = 0;
 					x++;
 				}
+				bReader.close();
 			} else {
 				return null;
 			}
+			
 
 		} catch (Exception e) {
 			e.getMessage();

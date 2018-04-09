@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import com.cenfotec.patrones.datostxt.ProfesionTexto;
 import com.cenfotec.patrones.entidades.Profesion;
+import com.cenfotec.patrones.fabricas.FabricaTextos;
 
 public class GestorProfesion {
 
@@ -20,7 +21,7 @@ public class GestorProfesion {
 	}
 
 	public void getProfesion() {
-		ProfesionTexto profesion_txt = new ProfesionTexto();
+		ProfesionTexto profesion_txt = FabricaTextos.crearProfesionTexto();
 		profesion_txt.showProfesion();
 	}
 
@@ -37,10 +38,10 @@ public class GestorProfesion {
 					if (nom_profesion.getId_profesion() == Integer.parseInt(profesion[0])) {
 						String[] datos_profesion = linea.split(" ");
 						Profesion pos_profesion = new Profesion(Integer.parseInt(datos_profesion[0]),
-								datos_profesion[1]);
+								datos_profesion[1]);						
 						return pos_profesion;
-
 					}
+					bReader.close();
 				}
 			}
 		} catch (IOException e) {

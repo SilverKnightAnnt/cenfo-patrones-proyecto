@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import com.cenfotec.patrones.datostxt.RolTexto;
 import com.cenfotec.patrones.entidades.Rol;
+import com.cenfotec.patrones.fabricas.FabricaTextos;
 
 public class GestorRol {
 	public boolean isEmpty() {
@@ -19,7 +20,7 @@ public class GestorRol {
 	}
 
 	public void getRol() {
-		RolTexto rol_txt = new RolTexto();
+		RolTexto rol_txt = FabricaTextos.crearRolTexto();
 		rol_txt.showRol();
 	}
 
@@ -38,7 +39,9 @@ public class GestorRol {
 						Rol pos_rol = new Rol(Integer.parseInt(datos_rol[0]), datos_rol[1]);
 						return pos_rol;
 					}
+					bReader.close();
 				}
+				
 			}
 		} catch (IOException e) {
 			e.getMessage();

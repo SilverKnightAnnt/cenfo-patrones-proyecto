@@ -53,6 +53,7 @@ public class PersonajeTexto {
 							Integer.parseInt(datos_personaje[10]));
 					pos_personaje.toString();
 				}
+				bReader.close();
 			}
 		} catch (Exception e) {
 			e.getMessage();
