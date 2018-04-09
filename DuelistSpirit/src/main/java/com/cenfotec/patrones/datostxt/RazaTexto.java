@@ -25,6 +25,7 @@ public class RazaTexto {
 					raza.imprimirRaza();
 
 				}
+				bReader.close();
 			}
 		} catch (Exception e) {
 			e.getMessage();

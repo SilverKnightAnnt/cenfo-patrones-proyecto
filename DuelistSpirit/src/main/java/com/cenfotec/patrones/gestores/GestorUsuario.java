@@ -4,11 +4,12 @@ import java.io.*;
 
 import com.cenfotec.patrones.datostxt.UsuarioTexto;
 import com.cenfotec.patrones.entidades.Usuario;
+import com.cenfotec.patrones.fabricas.FabricaTextos;
 
 public class GestorUsuario {
 	
 	public void crearCuenta(Usuario pUsuario) {
-		UsuarioTexto dataUsuario = new UsuarioTexto();
+		UsuarioTexto dataUsuario = FabricaTextos.crearUsuarioTexto();
 		dataUsuario.añadirUsuario(pUsuario);
 
 	}
@@ -29,7 +30,6 @@ public class GestorUsuario {
 						encontrado = true;
 					}
 				}
-				bReader.close();
 			}			
 
 		} catch (Exception ex) {

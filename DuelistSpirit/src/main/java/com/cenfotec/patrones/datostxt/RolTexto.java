@@ -22,6 +22,7 @@ public class RolTexto {
 					Rol rol = new Rol(Integer.parseInt(datos_rol[0]), datos_rol[1]);
 					rol.imprimirRol();
 				}
+				bReader.close();
 			}
 		} catch (Exception e) {
 			e.getMessage();
