@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import com.cenfotec.patrones.datostxt.RazaTexto;
 import com.cenfotec.patrones.entidades.Raza;
+import com.cenfotec.patrones.fabricas.FabricaTextos;
 
 public class GestorRaza {
 	public boolean isEmpty() {
@@ -19,7 +20,7 @@ public class GestorRaza {
 	}
 
 	public void getRaza() {
-		RazaTexto raza_txt = new RazaTexto();
+		RazaTexto raza_txt = FabricaTextos.crearRazaTexto();
 		raza_txt.showRaza();
 	}
 
@@ -38,6 +39,7 @@ public class GestorRaza {
 						Raza pos_raza = new Raza(Integer.parseInt(datos_raza[0]), datos_raza[1]);
 						return pos_raza;
 					}
+					bReader.close();
 				}
 			}
 		} catch (IOException e) {

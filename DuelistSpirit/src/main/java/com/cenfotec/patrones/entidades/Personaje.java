@@ -1,7 +1,7 @@
 package com.cenfotec.patrones.entidades;
 
 public class Personaje {
-
+	
 	private String usuario;
 	private String nombre;
 	private String genero;
@@ -15,10 +15,8 @@ public class Personaje {
 	private int exp;
 
 	public Personaje() {
-	
+
 	}
-		
-	
 
 	public Personaje(String usuario, String nombre, String genero, String raza, String rol, String profesion,
 			int hp_max, int hp_actual, int atk, int nivel, int exp) {
@@ -34,8 +32,8 @@ public class Personaje {
 		this.atk = atk;
 		this.nivel = nivel;
 		this.exp = exp;
-	}
-
+	}	
+	
 	public String getUsuario() {
 		return usuario;
 	}
@@ -123,5 +121,10 @@ public class Personaje {
 	public void setExp(int exp) {
 		this.exp = exp;
 	}
-}
 
+	@Override
+	public String toString() {
+		return nombre + " " + genero + " " + raza +
+				" " + rol + " " + profesion + " " + nivel;
+	}
+}
