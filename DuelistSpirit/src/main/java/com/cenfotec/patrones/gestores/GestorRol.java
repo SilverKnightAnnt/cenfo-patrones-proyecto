@@ -39,7 +39,6 @@ public class GestorRol {
 						Rol pos_rol = new Rol(Integer.parseInt(datos_rol[0]), datos_rol[1]);
 						return pos_rol;
 					}
-					bReader.close();
 				}
 				
 			}
