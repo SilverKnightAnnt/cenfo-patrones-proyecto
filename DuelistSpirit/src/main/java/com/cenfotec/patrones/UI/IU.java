@@ -1,8 +1,7 @@
 package com.cenfotec.patrones.UI;
 
 import java.io.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import com.cenfotec.patrones.entidades.*;
 import com.cenfotec.patrones.gestores.*;
@@ -14,7 +13,7 @@ public class IU {
 
 	int opcUser = 0;
 
-	public static void main(String[] args) throws java.io.IOException {
+	public static void main(String[] args) throws Exception {
 
 		int opc;
 		boolean noSalir = true;
@@ -55,7 +54,7 @@ public class IU {
 		return opcion;
 	}
 
-	static boolean ejecutarAccion(int popcion) throws java.io.IOException {
+	static boolean ejecutarAccion(int popcion) throws Exception {
 
 		boolean noSalir = true;
 
@@ -70,35 +69,6 @@ public class IU {
 			break;
 
 		case 3:
-
-			break;
-
-		case 4:
-
-			break;
-
-		case 5:
-
-			break;
-
-		case 6:
-
-			break;
-
-		case 7:
-
-			break;
-
-		case 8:
-
-			break;
-
-		case 9:
-
-			break;
-
-		case 10:
-
 			noSalir = false;
 			break;
 
@@ -128,7 +98,7 @@ public class IU {
 
 	}
 
-	public static void iniciarSesion() throws IOException {
+	public static void iniciarSesion() throws Exception {
 
 		Usuario usuario = new Usuario();
 		GestorUsuario gu = new GestorUsuario();
@@ -148,7 +118,7 @@ public class IU {
 
 	static String usuarioLogeado;
 
-	public static void menuInicioSesion() throws NumberFormatException, IOException {
+	public static void menuInicioSesion() throws Exception {
 
 		int opcion = -1;
 		do {
@@ -174,7 +144,7 @@ public class IU {
 		} while (opcion != 3);
 
 	}
-	
+
 	public static void crearPersonaje() throws IOException {
 		Personaje personaje = new Personaje();
 		Raza raza = new Raza();
@@ -186,8 +156,8 @@ public class IU {
 		GestorRol grol = new GestorRol();
 		GestorProfesion gprof = new GestorProfesion();
 
-		System.out.println("****CREACIÓN DEL DUELISTA***");		
-		personaje.setUsuario(usuarioLogeado);		
+		System.out.println("****CREACIÓN DEL DUELISTA***");
+		personaje.setUsuario(usuarioLogeado);
 		System.out.println("Nombre del duelista: ");
 		personaje.setNombre(in.readLine());
 		System.out.println("\nGenero del duelista: ");
@@ -265,34 +235,91 @@ public class IU {
 		}
 	}
 
-	public static void cargarPartida() throws IOException {
+	public static void cargarPartida() throws Exception {
 		GestorPersonaje gper = new GestorPersonaje();
 		Personaje personaje = new Personaje();
 		personaje.setUsuario(usuarioLogeado);
-		if (gper.buscarPersonaje(personaje) != null) {
+		if (gper.buscarPersonajeUsuario(personaje) != null) {
 			System.out.println("---Personajes---\n");
-			for (Personaje personajeEncontrado : gper.buscarPersonaje(personaje)) {
+			for (Personaje personajeEncontrado : gper.buscarPersonajeUsuario(personaje)) {
 				System.out.println(personajeEncontrado.toString());
 			}
-			System.out.println("\nDigite el nombre del duelista para cargar:");
+			System.out.println("\nDigite el nombre del duelista con el cual desea jugar:");
 			String nombrePersonaje = in.readLine();
-			cargarMapa(nombrePersonaje);
+			personaje.setNombre(nombrePersonaje);
+			if (gper.buscarPersonajeNombre(personaje).isEmpty()) {
+				System.out.println("\nDicho personaje no existe.");
+			} else {
+				listarPartidasPersonaje(nombrePersonaje);
+			}
+
 		}
 	}
 
-	public static void cargarMapa(String pNombrePersonaje) throws NumberFormatException, IOException {
-		GestorMapa gmapa = new GestorMapa();		
-		for (int i = 0; i < gmapa.getMapa().length; i++) {
-		    for (int j = 0; j < gmapa.getMapa()[i].length; j++) {
-		        System.out.print(gmapa.getMapa()[i][j] + " ");
-		    }
-		    System.out.println();
-		}      
-		
-				
+	public static void listarPartidasPersonaje(String pNombrePersonaje) throws Exception {
+		GestorMapa gmapa = new GestorMapa();
+		ArrayList<String> listaPartidasExistentes = gmapa.listarCargasDisponibles(pNombrePersonaje);
+		if (listaPartidasExistentes != null) {
+			for (String partida : listaPartidasExistentes) {
+				System.out.println(partida.toString());
+			}
+			System.out.println("\nDigite el número de la partida a cargar:");
+			int numeroPartida = Integer.parseInt(in.readLine());
+			mostrarMapaCargado(pNombrePersonaje, numeroPartida);
+		} else {
+			cargarMapaBase(pNombrePersonaje);
+		}
+	}
+
+	public static void mostrarMapaCargado(String pNombrePersonaje, int pNumeroPartida) throws Exception {
+		GestorMapa gmapa = new GestorMapa();
+		String[][] mapaCargado = gmapa.cargarPartida(pNombrePersonaje, pNumeroPartida);
+
+		if (mapaCargado != null) {
+			int posicionXActualPersonaje = -1;
+			int posicionYActualPersonaje = -1;
+			for (int x = 0; x < mapaCargado.length; x++) {
+				for (int y = 0; y < mapaCargado[x].length; y++) {
+					if (mapaCargado[x][y].equals("P")) {
+						posicionXActualPersonaje = x;
+						posicionYActualPersonaje = y;
+					}
+					System.out.print(mapaCargado[x][y] + " ");
+				}
+				System.out.println();
+			}
+			mostrarMenuMundo(posicionXActualPersonaje, posicionYActualPersonaje, pNombrePersonaje, mapaCargado);
+		} else {
+			System.out.println("\nNo existe dicha partida.");
+		}
+
+	}
+
+	public static void cargarMapaBase(String pNombrePersonaje) throws Exception {
+
+		int posicionXActualPersonaje = -1;
+		int posicionYActualPersonaje = -1;
+		GestorMapa gmapa = new GestorMapa();
+		String[][] mapaBase = gmapa.obtenerMapaBase();
+		for (int x = 0; x < mapaBase.length; x++) {
+			for (int y = 0; y < mapaBase[x].length; y++) {
+				if (mapaBase[x][y].equals("P")) {
+					posicionXActualPersonaje = x;
+					posicionYActualPersonaje = y;
+				}
+				System.out.print(mapaBase[x][y] + " ");
+			}
+			System.out.println();
+		}
+		mostrarMenuMundo(posicionXActualPersonaje, posicionYActualPersonaje, pNombrePersonaje, mapaBase);
+	}
+
+	public static void mostrarMenuMundo(int pPosicionXPersonajeActual, int pPosicionYPersonajeActual,
+			String pPersonajeActual, String[][] pMapaActual) throws Exception {
 		int opcion = -1;
 		do {
-			System.out.println("---Opciones del mundo---\n");
+
+			System.out.println("---Opciones del menú---\n");
 			System.out.println("1. Moverse.");
 			System.out.println("2. Guardar partida.");
 			System.out.println("3. Cargar partida.");
@@ -302,12 +329,13 @@ public class IU {
 
 			switch (opcion) {
 			case 1:
-				
+				moverJugador(pPosicionXPersonajeActual, pPosicionYPersonajeActual, pMapaActual);
 				break;
 			case 2:
-				guardarPartida(pNombrePersonaje);
+				guardarPartida(pPersonajeActual);
 				break;
 			case 3:
+				listarPartidasPersonaje(pPersonajeActual);
 				break;
 			case 4:
 				break;
@@ -316,11 +344,36 @@ public class IU {
 
 			}
 		} while (opcion != 4);
+	}
+
+	static String[][] mapaGenerado;
+
+	public static void moverJugador(int pPosicionXPersonajeActual, int pPosicionYPersonajeActual,
+			String[][] pMapaActual) throws Exception {
+
+		mapaGenerado = pMapaActual;
+
+		System.out.println("Digite la coordenada a la cual desea moverse: (separada por ',' Ejm: 3,5)");
+		String coordenadas = in.readLine();
+		String[] coordenada = coordenadas.split(",");
+		int coordXDestino = Integer.parseInt(coordenada[0]);
+		int coordYDestino = Integer.parseInt(coordenada[1]);
+		if (mapaGenerado[coordXDestino][coordYDestino].equals("-")) {
+			mapaGenerado[pPosicionXPersonajeActual][pPosicionYPersonajeActual] = "-";
+			mapaGenerado[coordXDestino][coordYDestino] = "P";
+		}
+
+		for (int x = 0; x < mapaGenerado.length; x++) {
+			for (int y = 0; y < mapaGenerado[x].length; y++) {
+				System.out.print(mapaGenerado[x][y] + " ");
+			}
+			System.out.println();
+		}
 
 	}
-	
+
 	public static void guardarPartida(String pNombrePersonaje) {
-		GestorMapa gmapa = new GestorMapa();	
-		gmapa.guardado(pNombrePersonaje);
+		GestorMapa gmapa = new GestorMapa();
+		gmapa.guardarPartida(pNombrePersonaje, mapaGenerado);
 	}
 }
