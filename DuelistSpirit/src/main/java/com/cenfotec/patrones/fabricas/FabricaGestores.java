@@ -23,4 +23,8 @@ public class FabricaGestores {
 		return new GestorUsuario();
 	}
 	
+	public static Validacion crearValidacion() {
+		return new Validacion();
+	}
+	
 }

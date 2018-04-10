@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class MapaTexto {
 
 	public String[][] obtenerMapaBase() {
-		String[][] mapa = new String[5][5];
+		String[][] mapa = new String[21][21];
 		try {
 			File myFile = new File("Mapa.txt");
 			if (myFile.exists()) {
@@ -22,7 +22,7 @@ public class MapaTexto {
 				int x = 0;
 				int y = 0;
 				while ((linea = bReader.readLine()) != null) {
-					String[] datosMapa = linea.split(" ");
+					String[] datosMapa = linea.split("\t");
 					for (int i = 0; i < datosMapa.length; i++) {
 						String value = datosMapa[i];
 						mapa[x][y] = value;
@@ -57,7 +57,7 @@ public class MapaTexto {
 	}
 
 	public String[][] cargarPartida(String pNombrePersonaje, int partida) {
-		String[][] mapa = new String[5][5];
+		String[][] mapa = new String[21][21];
 		try {
 			File myFile = new File("Mapa" + pNombrePersonaje + "(" + partida + ")" + ".txt");
 			if (myFile.exists()) {
@@ -68,7 +68,7 @@ public class MapaTexto {
 				int x = 0;
 				int y = 0;
 				while ((linea = bReader.readLine()) != null) {
-					String[] datosMapa = linea.split(" ");
+					String[] datosMapa = linea.split("\t");
 					for (int i = 0; i < datosMapa.length; i++) {
 						String value = datosMapa[i];
 						mapa[x][y] = value;
@@ -104,7 +104,7 @@ public class MapaTexto {
 				bWriter = new BufferedWriter(fWriter);
 				for (int k = 0; k < pMapaGenerado.length; k++) {
 					for (int j = 0; j < pMapaGenerado[k].length; j++) {
-						bWriter.write(pMapaGenerado[k][j] + " ");
+						bWriter.write(pMapaGenerado[k][j] + "\t");
 					}
 					bWriter.newLine();
 
