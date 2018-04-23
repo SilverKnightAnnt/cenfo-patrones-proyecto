@@ -2,7 +2,6 @@ package com.cenfotec.patrones.UI;
 
 import java.io.*;
 import java.util.ArrayList;
-
 import com.cenfotec.patrones.entidades.*;
 import com.cenfotec.patrones.fabricas.FabricaElementos;
 import com.cenfotec.patrones.fabricas.FabricaGestores;
@@ -84,8 +83,6 @@ public class IU {
 		return noSalir;
 	}
 
-	
-	
 	public static void crearCuenta() throws IOException {
 
 		Usuario usuario = FabricaElementos.crearUsuario();
@@ -150,7 +147,7 @@ public class IU {
 	}
 
 	public static void crearPersonaje() throws IOException {
-		
+
 		Personaje personaje = FabricaElementos.crearPersonaje();
 		Raza raza = FabricaElementos.crearRaza();
 		Rol rol = FabricaElementos.crearRol();
@@ -257,7 +254,6 @@ public class IU {
 			} else {
 				listarPartidasPersonaje(nombrePersonaje);
 			}
-
 		}
 	}
 
@@ -276,46 +272,39 @@ public class IU {
 		}
 	}
 
+	static int posicionXActualPersonaje = -1;
+	static int posicionYActualPersonaje = -1;	
+	
+	public static void imprimirMapa(String[][] mapaPorImprimir) {
+		for (int x = 0; x < mapaPorImprimir.length; x++) {
+			for (int y = 0; y < mapaPorImprimir[x].length; y++) {
+				if (mapaPorImprimir[x][y].equals("P")) {
+					posicionXActualPersonaje = x;
+					posicionYActualPersonaje = y;
+				}
+				System.out.print(mapaPorImprimir[x][y] + "\t");
+			}
+			System.out.println();
+		}
+	}
+
 	public static void mostrarMapaCargado(String pNombrePersonaje, int pNumeroPartida) throws Exception {
 		GestorMapa gmapa = FabricaGestores.crearGestorMapa();
 		String[][] mapaCargado = gmapa.cargarPartida(pNombrePersonaje, pNumeroPartida);
 
 		if (mapaCargado != null) {
-			int posicionXActualPersonaje = -1;
-			int posicionYActualPersonaje = -1;
-			for (int x = 0; x < mapaCargado.length; x++) {
-				for (int y = 0; y < mapaCargado[x].length; y++) {
-					if (mapaCargado[x][y].equals("P")) {
-						posicionXActualPersonaje = x;
-						posicionYActualPersonaje = y;
-					}
-					System.out.print(mapaCargado[x][y] + " ");
-				}
-				System.out.println();
-			}
-			mostrarMenuMundo(posicionXActualPersonaje, posicionYActualPersonaje, pNombrePersonaje, mapaCargado);
+			imprimirMapa(mapaCargado);
+			mostrarMenuMundo(posicionXActualPersonaje, posicionYActualPersonaje,
+					pNombrePersonaje, mapaCargado);
 		} else {
 			System.out.println("\nNo existe dicha partida.");
 		}
-
 	}
 
 	public static void cargarMapaBase(String pNombrePersonaje) throws Exception {
-
-		int posicionXActualPersonaje = -1;
-		int posicionYActualPersonaje = -1;
 		GestorMapa gmapa = FabricaGestores.crearGestorMapa();
 		String[][] mapaBase = gmapa.obtenerMapaBase();
-		for (int x = 0; x < mapaBase.length; x++) {
-			for (int y = 0; y < mapaBase[x].length; y++) {
-				if (mapaBase[x][y].equals("P")) {
-					posicionXActualPersonaje = x;
-					posicionYActualPersonaje = y;
-				}
-				System.out.print(mapaBase[x][y] + " ");
-			}
-			System.out.println();
-		}
+		imprimirMapa(mapaBase);		
 		mostrarMenuMundo(posicionXActualPersonaje, posicionYActualPersonaje, pNombrePersonaje, mapaBase);
 	}
 
@@ -334,7 +323,7 @@ public class IU {
 
 			switch (opcion) {
 			case 1:
-				moverJugador(pPosicionXPersonajeActual, pPosicionYPersonajeActual, pMapaActual);
+				moverJugador(posicionXActualPersonaje, posicionYActualPersonaje, pMapaActual);
 				break;
 			case 2:
 				guardarPartida(pPersonajeActual);
@@ -356,6 +345,7 @@ public class IU {
 	public static void moverJugador(int pPosicionXPersonajeActual, int pPosicionYPersonajeActual,
 			String[][] pMapaActual) throws Exception {
 
+		Validacion validaciones = FabricaGestores.crearValidacion();
 		mapaGenerado = pMapaActual;
 
 		System.out.println("Digite la coordenada a la cual desea moverse: (separada por ',' Ejm: 3,5)");
@@ -363,19 +353,38 @@ public class IU {
 		String[] coordenada = coordenadas.split(",");
 		int coordXDestino = Integer.parseInt(coordenada[0]);
 		int coordYDestino = Integer.parseInt(coordenada[1]);
-		if (mapaGenerado[coordXDestino][coordYDestino].equals("-")) {
-			mapaGenerado[pPosicionXPersonajeActual][pPosicionYPersonajeActual] = "-";
-			mapaGenerado[coordXDestino][coordYDestino] = "P";
+		boolean validacionMovida = validaciones.validarMovida(pPosicionXPersonajeActual,
+				pPosicionYPersonajeActual,coordXDestino,coordYDestino);
+		int evento = validaciones.accionMover(mapaGenerado[coordXDestino][coordYDestino]);
+		if (validacionMovida == true) {
+			procesarEvento(evento, pPosicionXPersonajeActual,pPosicionYPersonajeActual,
+					coordXDestino,coordYDestino);			
+			imprimirMapa(mapaGenerado);
+		} else {
+			System.out.println("\nCoordenada inválida.");
 		}
-
-		for (int x = 0; x < mapaGenerado.length; x++) {
-			for (int y = 0; y < mapaGenerado[x].length; y++) {
-				System.out.print(mapaGenerado[x][y] + " ");
-			}
-			System.out.println();
-		}
-
 	}
+	
+	public static void procesarEvento(int triggerEvento, int pPosicionXPersonajeActual, 
+			int pPosicionYPersonajeActual, int coordXDestino, int coordYDestino) {
+		
+		switch(triggerEvento) {
+		case 1:
+			moverNormal(pPosicionXPersonajeActual, pPosicionYPersonajeActual, 
+					coordXDestino, coordYDestino);
+			break;
+		}
+	}
+	
+	public static void moverNormal(int pPosicionXPersonajeActual, 
+			int pPosicionYPersonajeActual, int coordXDestino, int coordYDestino) {
+		
+		mapaGenerado[pPosicionXPersonajeActual][pPosicionYPersonajeActual] = "-";
+		mapaGenerado[coordXDestino][coordYDestino] = "P";
+		posicionXActualPersonaje = coordXDestino;
+		posicionYActualPersonaje = coordYDestino;
+		
+	}	
 
 	public static void guardarPartida(String pNombrePersonaje) {
 		GestorMapa gmapa = FabricaGestores.crearGestorMapa();
