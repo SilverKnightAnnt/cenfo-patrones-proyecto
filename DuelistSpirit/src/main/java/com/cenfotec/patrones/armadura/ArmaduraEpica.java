@@ -4,12 +4,12 @@ import com.cenfotec.patrones.inventario.Item;
 
 public class ArmaduraEpica extends Item {
 	public ArmaduraEpica() {
-		description = "";
+		description = "ArmaduraEpica";
 	}
 
 	@Override
 	public double vida() {
-		return 10;
+		return 0;
 	}
 
 	@Override

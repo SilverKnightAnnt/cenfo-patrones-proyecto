@@ -14,7 +14,7 @@ public class ArmaRegular extends Item {
 
 	@Override
 	public double ataque() {
-		return 5;
+		return 0;
 	}
 
 }

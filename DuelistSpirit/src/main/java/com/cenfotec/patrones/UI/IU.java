@@ -2,10 +2,13 @@ package com.cenfotec.patrones.UI;
 
 import java.io.*;
 import java.util.ArrayList;
+
+import com.cenfotec.patrones.armadura.ArmaduraEpica;
 import com.cenfotec.patrones.entidades.*;
 import com.cenfotec.patrones.fabricas.FabricaElementos;
 import com.cenfotec.patrones.fabricas.FabricaGestores;
 import com.cenfotec.patrones.gestores.*;
+import com.cenfotec.patrones.inventario.Item;
 
 public class IU {
 
@@ -273,8 +276,8 @@ public class IU {
 	}
 
 	static int posicionXActualPersonaje = -1;
-	static int posicionYActualPersonaje = -1;	
-	
+	static int posicionYActualPersonaje = -1;
+
 	public static void imprimirMapa(String[][] mapaPorImprimir) {
 		for (int x = 0; x < mapaPorImprimir.length; x++) {
 			for (int y = 0; y < mapaPorImprimir[x].length; y++) {
@@ -294,8 +297,7 @@ public class IU {
 
 		if (mapaCargado != null) {
 			imprimirMapa(mapaCargado);
-			mostrarMenuMundo(posicionXActualPersonaje, posicionYActualPersonaje,
-					pNombrePersonaje, mapaCargado);
+			mostrarMenuMundo(posicionXActualPersonaje, posicionYActualPersonaje, pNombrePersonaje, mapaCargado);
 		} else {
 			System.out.println("\nNo existe dicha partida.");
 		}
@@ -304,7 +306,7 @@ public class IU {
 	public static void cargarMapaBase(String pNombrePersonaje) throws Exception {
 		GestorMapa gmapa = FabricaGestores.crearGestorMapa();
 		String[][] mapaBase = gmapa.obtenerMapaBase();
-		imprimirMapa(mapaBase);		
+		imprimirMapa(mapaBase);
 		mostrarMenuMundo(posicionXActualPersonaje, posicionYActualPersonaje, pNombrePersonaje, mapaBase);
 	}
 
@@ -339,7 +341,6 @@ public class IU {
 			}
 		} while (opcion != 4);
 	}
-
 	static String[][] mapaGenerado;
 
 	public static void moverJugador(int pPosicionXPersonajeActual, int pPosicionYPersonajeActual,
@@ -353,41 +354,45 @@ public class IU {
 		String[] coordenada = coordenadas.split(",");
 		int coordXDestino = Integer.parseInt(coordenada[0]);
 		int coordYDestino = Integer.parseInt(coordenada[1]);
-		boolean validacionMovida = validaciones.validarMovida(pPosicionXPersonajeActual,
-				pPosicionYPersonajeActual,coordXDestino,coordYDestino);
+		boolean validacionMovida = validaciones.validarMovida(pPosicionXPersonajeActual, pPosicionYPersonajeActual,
+				coordXDestino, coordYDestino);
 		int evento = validaciones.accionMover(mapaGenerado[coordXDestino][coordYDestino]);
 		if (validacionMovida == true) {
-			procesarEvento(evento, pPosicionXPersonajeActual,pPosicionYPersonajeActual,
-					coordXDestino,coordYDestino);			
+			procesarEvento(evento, pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
 			imprimirMapa(mapaGenerado);
 		} else {
 			System.out.println("\nCoordenada inválida.");
 		}
 	}
-	
-	public static void procesarEvento(int triggerEvento, int pPosicionXPersonajeActual, 
-			int pPosicionYPersonajeActual, int coordXDestino, int coordYDestino) {
-		
-		switch(triggerEvento) {
+
+	public static void procesarEvento(int triggerEvento, int pPosicionXPersonajeActual, int pPosicionYPersonajeActual,
+			int coordXDestino, int coordYDestino) {
+
+		switch (triggerEvento) {
 		case 1:
-			moverNormal(pPosicionXPersonajeActual, pPosicionYPersonajeActual, 
-					coordXDestino, coordYDestino);
+			moverNormal(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
 			break;
 		}
 	}
-	
-	public static void moverNormal(int pPosicionXPersonajeActual, 
-			int pPosicionYPersonajeActual, int coordXDestino, int coordYDestino) {
-		
+
+	public static void moverNormal(int pPosicionXPersonajeActual, int pPosicionYPersonajeActual, int coordXDestino,
+			int coordYDestino) {
+
 		mapaGenerado[pPosicionXPersonajeActual][pPosicionYPersonajeActual] = "-";
 		mapaGenerado[coordXDestino][coordYDestino] = "P";
 		posicionXActualPersonaje = coordXDestino;
 		posicionYActualPersonaje = coordYDestino;
-		
-	}	
+
+	}
 
 	public static void guardarPartida(String pNombrePersonaje) {
 		GestorMapa gmapa = FabricaGestores.crearGestorMapa();
 		gmapa.guardarPartida(pNombrePersonaje, mapaGenerado);
+	}
+	
+	
+	public static void ejemploInventario() {
+		Item item = new ArmaduraEpica();
+		System.out.println(item.getDescription() + " " + item.vida() + " " + item.ataque());
 	}
 }

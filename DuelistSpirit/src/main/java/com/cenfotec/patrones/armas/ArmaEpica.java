@@ -9,7 +9,7 @@ public class ArmaEpica extends Item{
 	
 	@Override
 	public double ataque() {
-		return 10;
+		return 0;
 	}
 
 	@Override

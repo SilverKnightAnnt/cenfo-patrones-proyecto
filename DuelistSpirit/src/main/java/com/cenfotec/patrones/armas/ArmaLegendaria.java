@@ -14,7 +14,7 @@ public class ArmaLegendaria extends Item {
 
 	@Override
 	public double ataque() {
-		return 15;
+		return 0;
 	}
 
 }
