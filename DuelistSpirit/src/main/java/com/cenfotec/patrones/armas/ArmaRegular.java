@@ -1,20 +1,20 @@
-package com.cenfotec.patrones.armadura;
+package com.cenfotec.patrones.armas;
 
 import com.cenfotec.patrones.inventario.Item;
 
-public class ArmaduraEpica extends Item {
-	public ArmaduraEpica() {
+public class ArmaRegular extends Item {
+	public ArmaRegular() {
 		description = "";
 	}
 
 	@Override
 	public double vida() {
-		return 10;
+		return 0;
 	}
 
 	@Override
 	public double ataque() {
-		return 0;
+		return 5;
 	}
 
 }
