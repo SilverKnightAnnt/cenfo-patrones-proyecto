@@ -1,18 +1,9 @@
 package com.cenfotec.patrones.entidades;
 
 public class Personaje {
-	
-	private String usuario;
-	private String nombre;
-	private String genero;
-	private String raza;
-	private String rol;
-	private String profesion;
-	private int hp_max;
-	private int hp_actual;
-	private int atk;
-	private int nivel;
-	private int exp;
+
+	private String usuario, nombre, genero, raza, rol, profesion;
+	private int hp_max, hp_actual, atk, nivel, exp;
 
 	public Personaje() {
 
@@ -32,8 +23,26 @@ public class Personaje {
 		this.atk = atk;
 		this.nivel = nivel;
 		this.exp = exp;
-	}	
-	
+	}
+
+	public void quitarVida(int valorRemovido) {
+		hp_actual = hp_actual - valorRemovido;
+	}
+
+	public boolean isAlive() {
+		if (hp_actual > 0) {
+			return true;
+		} else
+			return false;
+	}
+
+	public boolean isDead() {
+		if (hp_actual < 0) {
+			return true;
+		} else
+			return false;
+	}
+
 	public String getUsuario() {
 		return usuario;
 	}
@@ -124,7 +133,6 @@ public class Personaje {
 
 	@Override
 	public String toString() {
-		return nombre + " " + genero + " " + raza +
-				" " + rol + " " + profesion + " " + nivel;
+		return nombre + " " + genero + " " + raza + " " + rol + " " + profesion + " " + nivel;
 	}
 }

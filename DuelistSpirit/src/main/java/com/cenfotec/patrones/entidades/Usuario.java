@@ -2,12 +2,10 @@ package com.cenfotec.patrones.entidades;
 
 public class Usuario {
 
-	private String correo;
-	private String nombreUsuario;
-	private String contrasenna;
-	
-	public Usuario(){
-		
+	private String correo, nombreUsuario, contrasenna;
+
+	public Usuario() {
+
 	}
 
 	public String getCorreo() {
@@ -33,13 +31,10 @@ public class Usuario {
 	public void setContrasenna(String contrasenna) {
 		this.contrasenna = contrasenna;
 	}
-	
+
 	@Override
-    public String toString() {		
-        return correo +" "+ nombreUsuario +" "+ contrasenna;
-    }
-	
-	
-	
-	
+	public String toString() {
+		return correo + " " + nombreUsuario + " " + contrasenna;
+	}
+
 }

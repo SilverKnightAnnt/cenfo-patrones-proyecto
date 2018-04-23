@@ -1,22 +1,27 @@
 package com.cenfotec.patrones.enemigo;
 
-import com.cenfotec.patrones.enemigoController.Enemy;
 
-public class EnemigoEpico extends Enemy {
+import com.cenfotec.patrones.entidades.Enemigo;
+
+public class EnemigoEpico extends Enemigo {
 	public EnemigoEpico() {
-		description = "Enemigo Epico";
+		super("Enemigo Epico", 100, 100, 10);
 	}
 
-	@Override
-	public double vida() {
+	// public EnemigoEpico() {
+	// description = "Enemigo Epico";
+	// }
 
-		return 0;
-	}
+	// @Override
+	// public double vida() {
 
-	@Override
-	public double ataque() {
+	// return 0;
+	// }
 
-		return 0;
-	}
+	// @Override
+	// public double ataque() {
+
+	// return 0;
+	// }
 
 }
