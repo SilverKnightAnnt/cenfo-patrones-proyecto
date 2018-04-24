@@ -8,6 +8,15 @@ public class Validacion {
 		case "-":
 			triggerEvento = 1;
 			break;
+		case "MR":
+			triggerEvento = 2;
+			break;
+		case "ME":
+			triggerEvento = 3;
+			break;
+		case "ML":
+			triggerEvento = 4;
+			break;
 		}
 		return triggerEvento;
 	}

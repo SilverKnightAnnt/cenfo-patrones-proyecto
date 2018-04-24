@@ -1,14 +1,19 @@
 package com.cenfotec.patrones.entidades;
 
-public class Enemigo {
+abstract public class Enemigo {
+
 	private String tipo;
-	private int hp_max;
-	private int hp_actual;
-	private int atk;
-	private int exp_drop;
+	private int hp_max, hp_actual, atk;
 
 	public Enemigo() {
 
+	}
+
+	public Enemigo(String tipo, int hp_max, int hp_actual, int atk) {
+		this.tipo = tipo;
+		this.hp_max = hp_max;
+		this.hp_actual = hp_actual;
+		this.atk = atk;
 	}
 
 	public String getTipo() {
@@ -43,12 +48,22 @@ public class Enemigo {
 		this.atk = atk;
 	}
 
-	public int getExp_drop() {
-		return exp_drop;
+	public boolean isAlive() {
+		if (hp_actual > 0) {
+			return true;
+		} else
+			return false;
 	}
 
-	public void setExp_drop(int exp_drop) {
-		this.exp_drop = exp_drop;
+	public boolean isDead() {
+		if (hp_actual < 0) {
+			return true;
+		} else
+			return false;
+	}
+
+	public void quitarVida(int valorRemovido) {
+		hp_actual = hp_actual - valorRemovido;
 	}
 
 }
