@@ -260,7 +260,6 @@ public class IU {
 			} else {
 				personajeEnJuego = gper.buscarPersonajeNombre(personaje).get(0);
 				listarPartidasPersonaje(nombrePersonaje);
-
 			}
 		}
 	}
@@ -409,8 +408,8 @@ public class IU {
 		boolean noSalir = true;
 
 		String[] listaMenuPelea = { "1. Atacar", "2. Huir", "3. Salir" };
-
-		if (noSalir == true) {
+    
+		if(noSalir == true) {
 			mostrarMenu(listaMenuPelea);
 			opc = leerOpcionPelea();
 			noSalir = ejecutarAccionPelea(opc);
@@ -459,7 +458,7 @@ public class IU {
 	}
 
 	public static void Combate(Personaje pPersonajeEnJuego) {
-
+    
 		EnemigoEpico enemigo = new EnemigoEpico();
 		System.out.println("Encontraste a un enemigo " + enemigo.getTipo());
 
