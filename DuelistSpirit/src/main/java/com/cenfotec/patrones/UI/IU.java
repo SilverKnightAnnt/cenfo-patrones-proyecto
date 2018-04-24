@@ -4,6 +4,8 @@ import java.io.*;
 import java.util.ArrayList;
 
 import com.cenfotec.patrones.armadura.ArmaduraEpica;
+import com.cenfotec.patrones.armas.Arma;
+import com.cenfotec.patrones.armas.ArmaEpica;
 import com.cenfotec.patrones.enemigo.EnemigoEpico;
 import com.cenfotec.patrones.entidades.*;
 import com.cenfotec.patrones.fabricas.FabricaElementos;
@@ -256,10 +258,14 @@ public class IU {
 			if (gper.buscarPersonajeNombre(personaje).isEmpty()) {
 				System.out.println("\nDicho personaje no existe.");
 			} else {
+				personajeEnJuego = gper.buscarPersonajeNombre(personaje).get(0);
 				listarPartidasPersonaje(nombrePersonaje);
+
 			}
 		}
 	}
+
+	static Personaje personajeEnJuego;
 
 	public static void listarPartidasPersonaje(String pNombrePersonaje) throws Exception {
 		GestorMapa gmapa = FabricaGestores.crearGestorMapa();
@@ -321,6 +327,7 @@ public class IU {
 			System.out.println("2. Guardar partida.");
 			System.out.println("3. Cargar partida.");
 			System.out.println("4. ATACAR!!!!");
+			System.out.println("5. Rejuntar objeto");
 			System.out.println("5. Salir.\n");
 			System.out.println("Seleccione su opción: ");
 			opcion = Integer.parseInt(in.readLine());
@@ -337,6 +344,9 @@ public class IU {
 				break;
 			case 4:
 				peleaEnemigo();
+				break;
+			case 5:
+				menuInventario(personajeEnJuego);
 				break;
 			default:
 				out.println("Opción incorrecta.");
@@ -368,10 +378,6 @@ public class IU {
 			System.out.println("\nCoordenada inválida.");
 		}
 	}
-	
-
-		
-	
 
 	public static void procesarEvento(int triggerEvento, int pPosicionXPersonajeActual, int pPosicionYPersonajeActual,
 			int coordXDestino, int coordYDestino) {
@@ -398,23 +404,17 @@ public class IU {
 		gmapa.guardarPartida(pNombrePersonaje, mapaGenerado);
 	}
 
-	public static void ejemploInventario() {
-		Item item = new ArmaduraEpica();
-		System.out.println(item.getDescription() + " " + item.vida() + " " + item.ataque());
-	}
-
 	public static void peleaEnemigo() throws Exception {
 		int opc;
 		boolean noSalir = true;
 
 		String[] listaMenuPelea = { "1. Atacar", "2. Huir", "3. Salir" };
 
-		do {
+		if (noSalir == true) {
 			mostrarMenu(listaMenuPelea);
 			opc = leerOpcionPelea();
 			noSalir = ejecutarAccionPelea(opc);
-
-		} while (noSalir);
+		}
 
 		out.println("Hasta luego, duelista");
 	}
@@ -437,7 +437,7 @@ public class IU {
 		switch (popcion) {
 
 		case 1:
-			Combate();
+			Combate(personajeEnJuego);
 			break;
 
 		case 2:
@@ -458,34 +458,21 @@ public class IU {
 		return noSalir;
 	}
 
-	public static void Combate() {
+	public static void Combate(Personaje pPersonajeEnJuego) {
 
-		Personaje personaje = new Personaje();
-		personaje.setUsuario("DanRod"); //Se ocupa que jale los valores (Borrar esto cuando se solucione)
-		personaje.setNombre("Sarah"); //Se ocupa que jale los valores (Borrar esto cuando se solucione)
-		personaje.setGenero("Femenino"); //Se ocupa que jale los valores (Borrar esto cuando se solucione)
-		personaje.setRaza("Elfo"); //Se ocupa que jale los valores (Borrar esto cuando se solucione)
-		personaje.setRol("Arquero"); //Se ocupa que jale los valores (Borrar esto cuando se solucione)
-		personaje.setProfesion("Pescador"); //Se ocupa que jale los valores (Borrar esto cuando se solucione)
-		personaje.setHp_max(100); //Se ocupa que jale los valores (Borrar esto cuando se solucione)
-		personaje.setHp_actual(100); //Se ocupa que jale los valores (Borrar esto cuando se solucione)
-		personaje.setAtk(5); //Se ocupa que jale los valores (Borrar esto cuando se solucione)
-		personaje.setNivel(30); //Se ocupa que jale los valores (Borrar esto cuando se solucione)
-		personaje.setExp(400); //Se ocupa que jale los valores (Borrar esto cuando se solucione)
 		EnemigoEpico enemigo = new EnemigoEpico();
-
 		System.out.println("Encontraste a un enemigo " + enemigo.getTipo());
 
 		do {
-			cambioTurno(personaje, enemigo);
-		} while (isCombateActivo(personaje, enemigo));
+			cambioTurno(pPersonajeEnJuego, enemigo);
+		} while (isCombateActivo(pPersonajeEnJuego, enemigo));
 
 	}
 
 	public static void cambioTurno(Personaje personaje, Enemigo enemigo) {
 
 		if (personaje.getHp_actual() >= enemigo.getHp_actual()) {
-			System.out.println("Has atacado a " + enemigo.getTipo() + " " + personaje.getHp_actual() );
+			System.out.println("Has atacado a " + enemigo.getTipo() + " " + personaje.getHp_actual());
 			enemigo.quitarVida(personaje.getAtk());
 
 			if (enemigo.isAlive()) {
@@ -507,7 +494,8 @@ public class IU {
 		if (personaje.isAlive() && enemigo.isAlive()) {
 			return true;
 		} else if (!personaje.isAlive()) {
-			System.out.println("GAME OVER" + " " +"Te ha vencido: " + enemigo.getTipo() + " " + enemigo.getHp_actual() + "\n");
+			System.out.println(
+					"GAME OVER" + " " + "Te ha vencido: " + enemigo.getTipo() + " " + enemigo.getHp_actual() + "\n");
 			System.out.println("Vida Personaje " + personaje.getHp_actual());
 			System.out.println("Vida enemigo " + enemigo.getHp_actual());
 			return false;
@@ -517,6 +505,52 @@ public class IU {
 			System.out.println("Vida enemigo " + enemigo.getHp_actual());
 			return false;
 		}
+	}
+
+	public static void menuInventario(Personaje pPersonajeEnJuego) throws IOException {
+		ArmaEpica armaEpica = new ArmaEpica();
+
+		int opcion;
+		opcion = -1;
+
+		out.println("Has encontrado: " + armaEpica.getNombre() + "\n");
+		out.println("1. Agregar al inventario");
+		out.println("2. Ignorar y continuar");
+		out.print("Digite la opcion" + "\n");
+		opcion = Integer.parseInt(in.readLine());
+		procesarOpcionInventario(opcion);
+
+	}
+
+	public static void procesarOpcionInventario(int pOpcion) throws IOException {
+
+		switch (pOpcion) {
+		case 1:
+			pickUpInventario(personajeEnJuego);
+			break;
+		case 2:
+			break;
+
+		default:
+			out.println("Opción inválida");
+		}
+	}
+
+	public static void pickUpInventario(Personaje pPersonajeEnJuego) {
+
+		ArmaEpica armaEpica = new ArmaEpica();
+		System.out.println(" ");
+		System.out.println("Has obtenido: " + armaEpica.getNombre());
+
+		accionPickUp(pPersonajeEnJuego, armaEpica);
+
+	}
+
+	public static void accionPickUp(Personaje pPersonajeEnJuego, Inventario objeto) {
+		pPersonajeEnJuego.agregarInventario(objeto.getVida(), objeto.getAtaque());
+		System.out.println("Vida: " + personajeEnJuego.getHp_actual());
+		System.out.println("Ataque: " + personajeEnJuego.getAtk());
+		System.out.println(" ");
 	}
 
 }
