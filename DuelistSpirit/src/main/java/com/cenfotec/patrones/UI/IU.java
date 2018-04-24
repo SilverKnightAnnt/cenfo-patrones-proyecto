@@ -256,11 +256,14 @@ public class IU {
 			if (gper.buscarPersonajeNombre(personaje).isEmpty()) {
 				System.out.println("\nDicho personaje no existe.");
 			} else {
+				personajeEnJuego = gper.buscarPersonajeNombre(personaje).get(0);
 				listarPartidasPersonaje(nombrePersonaje);
+				
 			}
 		}
 	}
 
+	static Personaje personajeEnJuego;
 	public static void listarPartidasPersonaje(String pNombrePersonaje) throws Exception {
 		GestorMapa gmapa = FabricaGestores.crearGestorMapa();
 		ArrayList<String> listaPartidasExistentes = gmapa.listarCargasDisponibles(pNombrePersonaje);
@@ -398,23 +401,17 @@ public class IU {
 		gmapa.guardarPartida(pNombrePersonaje, mapaGenerado);
 	}
 
-	public static void ejemploInventario() {
-		Item item = new ArmaduraEpica();
-		System.out.println(item.getDescription() + " " + item.vida() + " " + item.ataque());
-	}
-
 	public static void peleaEnemigo() throws Exception {
 		int opc;
 		boolean noSalir = true;
 
 		String[] listaMenuPelea = { "1. Atacar", "2. Huir", "3. Salir" };
-
-		do {
+		
+		if(noSalir == true) {
 			mostrarMenu(listaMenuPelea);
 			opc = leerOpcionPelea();
 			noSalir = ejecutarAccionPelea(opc);
-
-		} while (noSalir);
+		}
 
 		out.println("Hasta luego, duelista");
 	}
@@ -437,7 +434,7 @@ public class IU {
 		switch (popcion) {
 
 		case 1:
-			Combate();
+			Combate(personajeEnJuego);
 			break;
 
 		case 2:
@@ -458,27 +455,14 @@ public class IU {
 		return noSalir;
 	}
 
-	public static void Combate() {
-
-		Personaje personaje = new Personaje();
-		personaje.setUsuario("DanRod"); //Se ocupa que jale los valores (Borrar esto cuando se solucione)
-		personaje.setNombre("Sarah"); //Se ocupa que jale los valores (Borrar esto cuando se solucione)
-		personaje.setGenero("Femenino"); //Se ocupa que jale los valores (Borrar esto cuando se solucione)
-		personaje.setRaza("Elfo"); //Se ocupa que jale los valores (Borrar esto cuando se solucione)
-		personaje.setRol("Arquero"); //Se ocupa que jale los valores (Borrar esto cuando se solucione)
-		personaje.setProfesion("Pescador"); //Se ocupa que jale los valores (Borrar esto cuando se solucione)
-		personaje.setHp_max(100); //Se ocupa que jale los valores (Borrar esto cuando se solucione)
-		personaje.setHp_actual(100); //Se ocupa que jale los valores (Borrar esto cuando se solucione)
-		personaje.setAtk(5); //Se ocupa que jale los valores (Borrar esto cuando se solucione)
-		personaje.setNivel(30); //Se ocupa que jale los valores (Borrar esto cuando se solucione)
-		personaje.setExp(400); //Se ocupa que jale los valores (Borrar esto cuando se solucione)
+	public static void Combate(Personaje pPersonajeEnJuego) {
+		
 		EnemigoEpico enemigo = new EnemigoEpico();
-
 		System.out.println("Encontraste a un enemigo " + enemigo.getTipo());
 
 		do {
-			cambioTurno(personaje, enemigo);
-		} while (isCombateActivo(personaje, enemigo));
+			cambioTurno(pPersonajeEnJuego, enemigo);
+		} while (isCombateActivo(pPersonajeEnJuego, enemigo));
 
 	}
 
