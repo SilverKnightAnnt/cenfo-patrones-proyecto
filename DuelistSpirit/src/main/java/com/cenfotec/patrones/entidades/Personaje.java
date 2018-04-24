@@ -42,6 +42,11 @@ public class Personaje {
 		} else
 			return false;
 	}
+	
+	public void agregarInventario(int valorArmadura, int valorArma) {
+		hp_actual = hp_actual + valorArmadura;
+		atk = atk + valorArma;
+	}
 
 	public String getUsuario() {
 		return usuario;
