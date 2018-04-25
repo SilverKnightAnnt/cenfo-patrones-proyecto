@@ -1,9 +1,13 @@
 package com.cenfotec.patrones.armadura;
 
-import com.cenfotec.patrones.inventario.Item;
+import com.cenfotec.patrones.entidades.Inventario;
 
-public class ArmaduraEpica extends Item {
+public class ArmaduraEpica extends Inventario {
 	public ArmaduraEpica() {
+		super("Armadura Epica", 50, 0);
+	}
+	
+	/*public ArmaduraEpica() {
 		description = "ArmaduraEpica";
 	}
 
@@ -15,6 +19,6 @@ public class ArmaduraEpica extends Item {
 	@Override
 	public double ataque() {
 		return 0;
-	}
+	}*/
 
 }

@@ -2,6 +2,7 @@ package com.cenfotec.patrones.entidades;
 
 public class Personaje {
 
+	static int armadura;
 	private String usuario, nombre, genero, raza, rol, profesion;
 	private int hp_max, hp_actual, atk, nivel, exp;
 
@@ -42,10 +43,16 @@ public class Personaje {
 		} else
 			return false;
 	}
-	
+
 	public void agregarInventario(int valorArmadura, int valorArma) {
 		hp_actual = hp_actual + valorArmadura;
+		armadura = valorArmadura;
 		atk = atk + valorArma;
+	}
+
+	public void restablecerVida() {
+		hp_actual = hp_actual + armadura;
+
 	}
 
 	public String getUsuario() {
