@@ -5,6 +5,15 @@ import java.io.*;
 import com.cenfotec.patrones.entidades.Usuario;
 
 public class UsuarioTexto {
+	
+	public boolean isEmptyTxt() {
+		boolean isEmpty = false;
+		File f = new File("Usuario.txt");
+		if (f.exists()) {
+			isEmpty = true;
+		}
+		return isEmpty;
+	}
 
 	public void añadirUsuario(Usuario pUsuario) {
 		try {
@@ -56,4 +65,28 @@ public class UsuarioTexto {
 			e.getMessage();
 		}
 	}
+	
+	public boolean iniciarSesionTxt(Usuario pUsuario) {
+		boolean encontrado = false;
+		try {
+			File file = new File("Usuario.txt");
+			if(file.exists()) {
+				FileReader fReader = new FileReader(file);
+				BufferedReader bReader = new BufferedReader(fReader);
+				String linea;
+				
+				while ((linea = bReader.readLine()) != null) {
+					String[] usuario = linea.split(" ");
+					if (pUsuario.getNombreUsuario().equals(usuario[1]) && 
+							pUsuario.getContrasenna().equals(usuario[2])) {
+						encontrado = true;
+					}
+				}
+			}			
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return encontrado;
+	}	
 }

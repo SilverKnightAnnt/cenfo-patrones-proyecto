@@ -3,9 +3,11 @@ package com.cenfotec.patrones.UI;
 import java.io.*;
 import java.util.ArrayList;
 
+import com.cenfotec.patrones.armadura.*;
+import com.cenfotec.patrones.armas.*;
+import com.cenfotec.patrones.enemigo.*;
 import com.cenfotec.patrones.entidades.*;
-import com.cenfotec.patrones.fabricas.FabricaElementos;
-import com.cenfotec.patrones.fabricas.FabricaGestores;
+import com.cenfotec.patrones.fabricas.*;
 import com.cenfotec.patrones.gestores.*;
 
 public class IU {
@@ -34,7 +36,7 @@ public class IU {
 
 		} while (noSalir);
 
-		out.println("Gracias por usar nuestro sistema, que tenga un buen dia :)");
+		out.println("Solo tú decides tu propio destino.");
 	}
 
 	static void mostrarMenu(String[] plista) {
@@ -84,8 +86,6 @@ public class IU {
 		return noSalir;
 	}
 
-	
-	
 	public static void crearCuenta() throws IOException {
 
 		Usuario usuario = FabricaElementos.crearUsuario();
@@ -150,7 +150,7 @@ public class IU {
 	}
 
 	public static void crearPersonaje() throws IOException {
-		
+
 		Personaje personaje = FabricaElementos.crearPersonaje();
 		Raza raza = FabricaElementos.crearRaza();
 		Rol rol = FabricaElementos.crearRol();
@@ -174,7 +174,9 @@ public class IU {
 		raza.setId_raza(Integer.parseInt(in.readLine()));
 		if (gr.buscarRaza(raza) != null) {
 			personaje.setRaza(gr.buscarRaza(raza).getNombre());
-
+			personaje.setHp_max(gr.buscarRaza(raza).getHp());
+			personaje.setHp_actual(gr.buscarRaza(raza).getHp());
+			personaje.setAtk(gr.buscarRaza(raza).getAtk());
 		}
 
 		System.out.println("\nRol del duelista: ");
@@ -192,10 +194,6 @@ public class IU {
 		if (gprof.buscarProfesion(profesion) != null) {
 			personaje.setProfesion(gprof.buscarProfesion(profesion).getNombreProfesion());
 		}
-
-		personaje.setHp_max(100);
-		personaje.setHp_actual(100);
-		personaje.setAtk(10);
 		personaje.setNivel(0);
 		personaje.setExp(0);
 
@@ -255,11 +253,14 @@ public class IU {
 			if (gper.buscarPersonajeNombre(personaje).isEmpty()) {
 				System.out.println("\nDicho personaje no existe.");
 			} else {
+				personajeEnJuego = gper.buscarPersonajeNombre(personaje).get(0);
 				listarPartidasPersonaje(nombrePersonaje);
-			}
 
+			}
 		}
 	}
+
+	static Personaje personajeEnJuego;
 
 	public static void listarPartidasPersonaje(String pNombrePersonaje) throws Exception {
 		GestorMapa gmapa = FabricaGestores.crearGestorMapa();
@@ -270,9 +271,26 @@ public class IU {
 			}
 			System.out.println("\nDigite el número de la partida a cargar:");
 			int numeroPartida = Integer.parseInt(in.readLine());
+			obtenerPersonajeCargado(pNombrePersonaje, numeroPartida);
 			mostrarMapaCargado(pNombrePersonaje, numeroPartida);
 		} else {
 			cargarMapaBase(pNombrePersonaje);
+		}
+	}
+
+	static int posicionXActualPersonaje = -1;
+	static int posicionYActualPersonaje = -1;
+
+	public static void imprimirMapa(String[][] mapaPorImprimir) {
+		for (int x = 0; x < mapaPorImprimir.length; x++) {
+			for (int y = 0; y < mapaPorImprimir[x].length; y++) {
+				if (mapaPorImprimir[x][y].equals("P")) {
+					posicionXActualPersonaje = x;
+					posicionYActualPersonaje = y;
+				}
+				System.out.print(mapaPorImprimir[x][y] + "\t");
+			}
+			System.out.println();
 		}
 	}
 
@@ -281,41 +299,28 @@ public class IU {
 		String[][] mapaCargado = gmapa.cargarPartida(pNombrePersonaje, pNumeroPartida);
 
 		if (mapaCargado != null) {
-			int posicionXActualPersonaje = -1;
-			int posicionYActualPersonaje = -1;
-			for (int x = 0; x < mapaCargado.length; x++) {
-				for (int y = 0; y < mapaCargado[x].length; y++) {
-					if (mapaCargado[x][y].equals("P")) {
-						posicionXActualPersonaje = x;
-						posicionYActualPersonaje = y;
-					}
-					System.out.print(mapaCargado[x][y] + " ");
-				}
-				System.out.println();
-			}
+			imprimirMapa(mapaCargado);
 			mostrarMenuMundo(posicionXActualPersonaje, posicionYActualPersonaje, pNombrePersonaje, mapaCargado);
 		} else {
 			System.out.println("\nNo existe dicha partida.");
 		}
+	}
 
+	public static void obtenerPersonajeCargado(String pNombrePersonaje, int pNumeroPartida) throws Exception {
+		GestorMapa gmapa = FabricaGestores.crearGestorMapa();
+		Personaje personajeCargado = gmapa.cargarPersonaje(pNombrePersonaje, pNumeroPartida);
+
+		if (personajeCargado != null) {
+			personajeEnJuego = personajeCargado;
+		} else {
+			System.out.println("\nNo existe dicha partida.");
+		}
 	}
 
 	public static void cargarMapaBase(String pNombrePersonaje) throws Exception {
-
-		int posicionXActualPersonaje = -1;
-		int posicionYActualPersonaje = -1;
 		GestorMapa gmapa = FabricaGestores.crearGestorMapa();
 		String[][] mapaBase = gmapa.obtenerMapaBase();
-		for (int x = 0; x < mapaBase.length; x++) {
-			for (int y = 0; y < mapaBase[x].length; y++) {
-				if (mapaBase[x][y].equals("P")) {
-					posicionXActualPersonaje = x;
-					posicionYActualPersonaje = y;
-				}
-				System.out.print(mapaBase[x][y] + " ");
-			}
-			System.out.println();
-		}
+		imprimirMapa(mapaBase);
 		mostrarMenuMundo(posicionXActualPersonaje, posicionYActualPersonaje, pNombrePersonaje, mapaBase);
 	}
 
@@ -334,7 +339,7 @@ public class IU {
 
 			switch (opcion) {
 			case 1:
-				moverJugador(pPosicionXPersonajeActual, pPosicionYPersonajeActual, pMapaActual);
+				moverJugador(posicionXActualPersonaje, posicionYActualPersonaje, pMapaActual);
 				break;
 			case 2:
 				guardarPartida(pPersonajeActual);
@@ -356,6 +361,7 @@ public class IU {
 	public static void moverJugador(int pPosicionXPersonajeActual, int pPosicionYPersonajeActual,
 			String[][] pMapaActual) throws Exception {
 
+		Validacion validaciones = FabricaGestores.crearValidacion();
 		mapaGenerado = pMapaActual;
 
 		System.out.println("Digite la coordenada a la cual desea moverse: (separada por ',' Ejm: 3,5)");
@@ -363,22 +369,258 @@ public class IU {
 		String[] coordenada = coordenadas.split(",");
 		int coordXDestino = Integer.parseInt(coordenada[0]);
 		int coordYDestino = Integer.parseInt(coordenada[1]);
-		if (mapaGenerado[coordXDestino][coordYDestino].equals("-")) {
-			mapaGenerado[pPosicionXPersonajeActual][pPosicionYPersonajeActual] = "-";
-			mapaGenerado[coordXDestino][coordYDestino] = "P";
+		boolean validacionMovida = validaciones.validarMovida(pPosicionXPersonajeActual, pPosicionYPersonajeActual,
+				coordXDestino, coordYDestino);
+		int evento = validaciones.accionMover(mapaGenerado[coordXDestino][coordYDestino]);
+		if (validacionMovida == true) {
+			procesarEvento(evento, pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
+			imprimirMapa(mapaGenerado);
+		} else {
+			System.out.println("\nCoordenada inválida.");
+		}
+	}
+
+	public static void procesarEvento(int triggerEvento, int pPosicionXPersonajeActual, int pPosicionYPersonajeActual,
+			int coordXDestino, int coordYDestino) throws Exception {
+
+		switch (triggerEvento) {
+		case 1:
+			moverNormal(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
+			break;
+		case 2:
+			EnemigoRegular enemigo = new EnemigoRegular();
+			peleaEnemigo(enemigo);
+			condicionVictoria(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
+			break;
+		case 3:
+			EnemigoEpico enemigo2 = new EnemigoEpico();
+			peleaEnemigo(enemigo2);
+			condicionVictoria(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
+			break;
+		case 4:
+			EnemigoLegendario enemigo3 = new EnemigoLegendario();
+			peleaEnemigo(enemigo3);
+			condicionVictoria(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
+			break;
+		case 5:
+			ArmaRegular arma = new ArmaRegular();
+			menuInventario(personajeEnJuego, arma);
+			condicionAgarre(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
+			break;
+		case 6:
+			ArmaEpica arma2 = new ArmaEpica();
+			menuInventario(personajeEnJuego, arma2);
+			condicionAgarre(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
+			break;
+		case 7:
+			ArmaLegendaria arma3 = new ArmaLegendaria();
+			menuInventario(personajeEnJuego, arma3);
+			condicionAgarre(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
+			break;
+		case 8:
+			ArmaduraRegular armadura = new ArmaduraRegular();
+			menuInventario(personajeEnJuego, armadura);
+			condicionAgarre(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
+			break;
+		case 9:
+			ArmaduraEpica armadura2 = new ArmaduraEpica();
+			menuInventario(personajeEnJuego, armadura2);
+			condicionAgarre(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
+			break;
+		case 10:
+			ArmaduraLegendaria armadura3 = new ArmaduraLegendaria();
+			menuInventario(personajeEnJuego, armadura3);
+			condicionAgarre(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
+			break;
 		}
 
-		for (int x = 0; x < mapaGenerado.length; x++) {
-			for (int y = 0; y < mapaGenerado[x].length; y++) {
-				System.out.print(mapaGenerado[x][y] + " ");
-			}
-			System.out.println();
-		}
+	}
 
+	public static void moverNormal(int pPosicionXPersonajeActual, int pPosicionYPersonajeActual, int coordXDestino,
+			int coordYDestino) {
+
+		mapaGenerado[pPosicionXPersonajeActual][pPosicionYPersonajeActual] = "-";
+		mapaGenerado[coordXDestino][coordYDestino] = "P";
+		posicionXActualPersonaje = coordXDestino;
+		posicionYActualPersonaje = coordYDestino;
+
+	}
+
+	public static void condicionVictoria(int pPosicionXPersonajeActual, int pPosicionYPersonajeActual,
+			int coordXDestino, int coordYDestino) throws Exception {
+
+		if (vencio == true) {
+			moverNormal(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
+		} else {
+			menuInicioSesion();
+		}
+	}
+
+	public static void condicionAgarre(int pPosicionXPersonajeActual, int pPosicionYPersonajeActual, int coordXDestino,
+			int coordYDestino) {
+		if (obtuvoObjeto == true) {
+			moverNormal(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
+		}
 	}
 
 	public static void guardarPartida(String pNombrePersonaje) {
 		GestorMapa gmapa = FabricaGestores.crearGestorMapa();
 		gmapa.guardarPartida(pNombrePersonaje, mapaGenerado);
+		gmapa.guardarJugador(personajeEnJuego);
 	}
+
+	static Enemigo enemigoActual;
+
+	public static void peleaEnemigo(Enemigo enemigo) throws Exception {
+		int opc;
+		boolean noSalir = true;
+
+		System.out.println("Encontraste a un " + enemigo.getTipo() + "\n");
+		enemigoActual = enemigo;
+		String[] listaMenuPelea = { "1. Atacar", "2. Huir", "3. Salir" };
+
+		if (noSalir == true) {
+			mostrarMenu(listaMenuPelea);
+			opc = leerOpcionPelea();
+			noSalir = ejecutarAccionPelea(opc);
+		}
+	}
+
+	static int leerOpcionPelea() throws java.io.IOException {
+
+		int opcion;
+
+		out.print("Seleccione su opcion: ");
+		opcion = Integer.parseInt(in.readLine());
+		out.println();
+
+		return opcion;
+	}
+
+	static boolean ejecutarAccionPelea(int popcion) throws Exception {
+
+		boolean noSalir = true;
+
+		switch (popcion) {
+
+		case 1:
+			Combate(personajeEnJuego, enemigoActual);
+			break;
+
+		case 2:
+			iniciarSesion();
+			break;
+
+		case 3:
+			noSalir = false;
+			break;
+
+		default:
+
+			out.println("Opcion invalida");
+			out.println();
+			break;
+		}
+
+		return noSalir;
+	}
+
+	public static void Combate(Personaje pPersonajeEnJuego, Enemigo enemigo) {
+
+		do {
+			cambioTurno(pPersonajeEnJuego, enemigo);
+		} while (isCombateActivo(pPersonajeEnJuego, enemigo));
+
+	}
+
+	public static void cambioTurno(Personaje personaje, Enemigo enemigo) {
+
+		if (personaje.getHp_actual() >= enemigo.getHp_actual()) {
+			System.out.println("Has atacado a " + enemigo.getTipo() + " " + personaje.getHp_actual());
+			enemigo.quitarVida(personaje.getAtk());
+
+			if (enemigo.isAlive()) {
+				System.out.println(enemigo.getTipo() + "El enemigo ataca de vuelta!" + enemigo.getHp_actual());
+				personaje.quitarVida(enemigo.getAtk());
+			}
+		} else {
+			System.out.println("El enemigo te ha atacado " + personaje.getHp_actual());
+			personaje.quitarVida(enemigo.getAtk());
+			if (personaje.isAlive()) {
+				System.out.println("Has atacado devuelta a: " + enemigo.getTipo() + "" + enemigo.getHp_actual());
+				enemigo.quitarVida(personaje.getAtk());
+			}
+		}
+
+	}
+
+	static boolean vencio = false;
+
+	public static boolean isCombateActivo(Personaje personaje, Enemigo enemigo) {
+		if (personaje.isAlive() && enemigo.isAlive()) {
+			return true;
+		} else if (!personaje.isAlive()) {
+			System.out.println(
+					"GAME OVER" + " " + "Te ha vencido: " + enemigo.getTipo() + " " + enemigo.getHp_actual() + "\n");
+			System.out.println("Vida Personaje " + personaje.getHp_actual());
+			System.out.println("Vida enemigo " + enemigo.getHp_actual());
+			return false;
+		} else {
+			System.out.println("¡Felidades! Has vencido a: " + enemigo.getTipo() + "\n");
+			System.out.println("Vida Personaje " + personaje.getHp_actual());
+			System.out.println("Vida enemigo " + enemigo.getHp_actual());
+			vencio = true;
+			return false;
+		}
+	}
+
+	static Inventario objetoActual;
+
+	public static void menuInventario(Personaje pPersonajeEnJuego, Inventario pObjetoActual) throws IOException {
+
+		int opcion;
+		opcion = -1;
+
+		out.println("Has encontrado: " + pObjetoActual.getNombre() + "\n");
+		objetoActual = pObjetoActual;
+		out.println("1. Agregar al inventario");
+		out.println("2. Ignorar y continuar");
+		out.print("Digite la opcion" + "\n");
+		opcion = Integer.parseInt(in.readLine());
+		procesarOpcionInventario(opcion);
+
+	}
+
+	public static void procesarOpcionInventario(int pOpcion) throws IOException {
+
+		switch (pOpcion) {
+		case 1:
+			pickUpInventario(personajeEnJuego, objetoActual);
+			break;
+		case 2:
+			break;
+
+		default:
+			out.println("Opción inválida");
+		}
+	}
+
+	static boolean obtuvoObjeto = false;
+
+	public static void pickUpInventario(Personaje pPersonajeEnJuego, Inventario pObjeto) {
+
+		System.out.println(" ");
+		System.out.println("Has obtenido: " + pObjeto.getNombre());
+		obtuvoObjeto = true;
+		accionPickUp(pPersonajeEnJuego, pObjeto);
+
+	}
+
+	public static void accionPickUp(Personaje pPersonajeEnJuego, Inventario objeto) {
+		pPersonajeEnJuego.agregarInventario(objeto.getVida(), objeto.getAtaque());
+		System.out.println("Vida: " + personajeEnJuego.getHp_actual());
+		System.out.println("Ataque: " + personajeEnJuego.getAtk());
+		System.out.println(" ");
+	}
+
 }
