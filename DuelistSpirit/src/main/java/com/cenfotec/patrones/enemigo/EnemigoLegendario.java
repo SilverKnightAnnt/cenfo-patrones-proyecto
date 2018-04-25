@@ -1,13 +1,13 @@
 package com.cenfotec.patrones.enemigo;
 
-import com.cenfotec.patrones.enemigoController.Enemy;
+import com.cenfotec.patrones.entidades.Enemigo;
 
-public class EnemigoLegendario extends Enemy {
+public class EnemigoLegendario extends Enemigo {
 	public EnemigoLegendario() {
-		description = "Enemigo Legendario";
+		super("Enemigo Legendario", 200, 200, 50);
 	}
 
-	@Override
+	/*@Override
 	public double vida() {
 
 		return 0;
@@ -17,6 +17,6 @@ public class EnemigoLegendario extends Enemy {
 	public double ataque() {
 
 		return 0;
-	}
+	}*/
 
 }

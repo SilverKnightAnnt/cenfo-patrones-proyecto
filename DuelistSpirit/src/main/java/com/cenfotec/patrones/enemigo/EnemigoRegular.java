@@ -1,9 +1,14 @@
 package com.cenfotec.patrones.enemigo;
 
-import com.cenfotec.patrones.enemigoController.Enemy;
 
-public class EnemigoRegular extends Enemy {
+import com.cenfotec.patrones.entidades.Enemigo;
+
+public class EnemigoRegular extends Enemigo {
 	public EnemigoRegular() {
+		super("Enemigo Regular", 20, 20, 5);
+	}
+	
+	/*public EnemigoRegular() {
 		description = "Enemigo Regular";
 	}
 
@@ -17,6 +22,6 @@ public class EnemigoRegular extends Enemy {
 	public double ataque() {
 
 		return 0;
-	}
+	}*/
 
 }

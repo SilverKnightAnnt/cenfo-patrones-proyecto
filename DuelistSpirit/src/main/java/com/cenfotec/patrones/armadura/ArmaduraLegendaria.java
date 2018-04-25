@@ -1,9 +1,13 @@
 package com.cenfotec.patrones.armadura;
 
-import com.cenfotec.patrones.inventario.Item;
+import com.cenfotec.patrones.entidades.Inventario;
 
-public class ArmaduraLegendaria extends Item{
+public class ArmaduraLegendaria extends Inventario{
 	public ArmaduraLegendaria() {
+		super("Armadura Legendaria", 100, 0);
+	}
+	
+	/*public ArmaduraLegendaria() {
 		description = "";
 	}
 
@@ -15,7 +19,7 @@ public class ArmaduraLegendaria extends Item{
 	@Override
 	public double ataque() {
 		return 0;
-	}
+	}*/
 	
 
 }
