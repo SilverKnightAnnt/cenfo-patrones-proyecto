@@ -38,6 +38,12 @@ public class Validacion {
 		case "+":
 			triggerEvento = 11;
 			break;
+		case "M":
+			triggerEvento = 12;
+			break;
+		case "B":
+			triggerEvento = 13;
+			break;
 		}
 		return triggerEvento;
 	}

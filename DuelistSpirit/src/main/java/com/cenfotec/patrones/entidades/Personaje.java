@@ -147,4 +147,16 @@ public class Personaje {
 	public String toString() {
 		return nombre + " " + genero + " " + raza + " " + rol + " " + profesion + " " + nivel;
 	}
+	
+	public String estadisticas() {		
+		
+		return "\nNombre: " +nombre + 
+				"\nGénero: " + genero + 
+				"\nRaza: " + raza + 
+				"\nRol: " + rol + 
+				"\nProfesión: " + profesion + 
+				"\nVida actual: " + hp_actual + 
+				"\nAtaque: " + atk + 
+				"\nNivel: " + nivel +"\n";
+	}
 }
