@@ -165,9 +165,22 @@ public class IU {
 		personaje.setUsuario(usuarioLogeado);
 		System.out.println("Nombre del duelista: ");
 		personaje.setNombre(in.readLine());
-		System.out.println("\nGenero del duelista: ");
-		personaje.setGenero(in.readLine());
-
+		System.out.println("\nGénero del duelista: ");
+		System.out.println("1. Masculino.");
+		System.out.println("2. Femenino.");
+		System.out.println("Seleccione el género:");
+		int gener = Integer.parseInt(in.readLine());
+		switch(gener) {
+		case 1:
+			personaje.setGenero("Masculino");
+			break;
+		case 2:
+			personaje.setGenero("Femenino");
+			break;
+		default: 
+			System.out.println("Opción incorrecta.");
+			break;
+		}
 		System.out.println("\nSeleccione la raza del duelista: ");
 		listarRaza();
 		System.out.println("\nEscoja el número de la raza del duelista: ");
@@ -194,7 +207,7 @@ public class IU {
 		if (gprof.buscarProfesion(profesion) != null) {
 			personaje.setProfesion(gprof.buscarProfesion(profesion).getNombreProfesion());
 		}
-		personaje.setNivel(0);
+		personaje.setNivel(1);
 		personaje.setExp(0);
 
 		gp.creacionPersonaje(personaje);
@@ -282,6 +295,12 @@ public class IU {
 	static int posicionYActualPersonaje = -1;
 
 	public static void imprimirMapa(String[][] mapaPorImprimir) {
+		
+		System.out.println("\nMisiones:");
+		System.out.println("1. Obtener el arma legendaria.");
+		System.out.println("2. Obtener la armadura legendaria (Debes ser al menos nivel 10)");
+		System.out.println("3. Vence al Enemigo Legendario.");
+		System.out.println("!Buena suerte¡\n");
 		for (int x = 0; x < mapaPorImprimir.length; x++) {
 			for (int y = 0; y < mapaPorImprimir[x].length; y++) {
 				if (mapaPorImprimir[x][y].equals("P")) {
@@ -333,7 +352,8 @@ public class IU {
 			System.out.println("1. Moverse.");
 			System.out.println("2. Guardar partida.");
 			System.out.println("3. Cargar partida.");
-			System.out.println("4. Salir.\n");
+			System.out.println("4. Ver estatísticas.");
+			System.out.println("5. Salir.\n");
 			System.out.println("Seleccione su opción: ");
 			opcion = Integer.parseInt(in.readLine());
 
@@ -348,12 +368,19 @@ public class IU {
 				listarPartidasPersonaje(pPersonajeActual);
 				break;
 			case 4:
+				verEstadisticas();
+				break;
+			case 5:
 				break;
 			default:
 				out.println("Opción incorrecta.");
 
 			}
-		} while (opcion != 4);
+		} while (opcion != 5);
+	}
+	
+	static void verEstadisticas() {
+		System.out.println(personajeEnJuego.estadisticas());
 	}
 
 	static String[][] mapaGenerado;
@@ -401,6 +428,10 @@ public class IU {
 			EnemigoLegendario enemigo3 = new EnemigoLegendario();
 			peleaEnemigo(enemigo3);
 			condicionVictoria(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
+			if(vencio == true) {
+				System.out.println("!FELICIDADES¡ Has ganado el juego.");
+				menuInicioSesion();
+			}
 			break;
 		case 5:
 			ArmaRegular arma = new ArmaRegular();
@@ -434,8 +465,12 @@ public class IU {
 			break;
 		case 11:
 			menuCampamento();
-			condicionDescansar(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
 			break;
+		case 12:
+			menuMontanna();
+			break;
+		case 13:
+			menuBarrera(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
 		}
 
 	}
@@ -467,13 +502,6 @@ public class IU {
 		}
 	}
 	
-	public static void condicionDescansar(int pPosicionXPersonajeActual, int pPosicionYPersonajeActual, int coordXDestino,
-			int coordYDestino) {
-		if (descansoCampamento == true) {
-			moverNormal(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
-		}
-	}
-
 	public static void guardarPartida(String pNombrePersonaje) {
 		GestorMapa gmapa = FabricaGestores.crearGestorMapa();
 		gmapa.guardarPartida(pNombrePersonaje, mapaGenerado);
@@ -580,6 +608,8 @@ public class IU {
 			System.out.println("¡Felidades! Has vencido a: " + enemigo.getTipo() + "\n");
 			System.out.println("Vida Personaje " + personaje.getHp_actual());
 			System.out.println("Vida enemigo " + enemigo.getHp_actual());
+			personaje.setNivel(personaje.getNivel() + 1);
+			System.out.println("Subiste de nivel.");
 			vencio = true;
 			return false;
 		}
@@ -678,6 +708,18 @@ public class IU {
 		System.out.println("El duelista se ha sanado: ");
 		System.out.println("Vida actual: " +  personajeEnJuego.getHp_actual());
 	}
+	
+	public static void menuMontanna() {
+		
+		System.out.println("\nFrente a tí hay una montaña, por ende no puedes avanzar.\n");
+	}
 
-
+	public static void menuBarrera(int pPosicionXPersonajeActual, int pPosicionYPersonajeActual, int coordXDestino,
+			int coordYDestino) {
+		if(personajeEnJuego.getNivel() >= 10) {
+			moverNormal(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
+		}else {
+			System.out.println("No eres lo suficientemente poderoso para atravesar la barrera.");
+		}
+	}
 }
