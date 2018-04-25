@@ -1,4 +1,4 @@
-1 Humano
-2 Enano
-3 Elfo
-4 Orco
+1 Humano 100 5 
+2 Enano 90 7
+3 Elfo 60 9
+4 Orco 80 10

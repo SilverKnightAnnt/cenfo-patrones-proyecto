@@ -436,7 +436,6 @@ public class IU {
 			menuCampamento();
 			condicionDescansar(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
 			break;
-			
 		}
 
 	}
