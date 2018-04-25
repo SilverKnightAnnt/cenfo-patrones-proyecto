@@ -432,6 +432,10 @@ public class IU {
 			menuInventario(personajeEnJuego, armadura3);
 			condicionAgarre(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
 			break;
+		case 11:
+			menuCampamento();
+			condicionDescansar(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
+			break;
 		}
 
 	}
@@ -459,6 +463,13 @@ public class IU {
 	public static void condicionAgarre(int pPosicionXPersonajeActual, int pPosicionYPersonajeActual, int coordXDestino,
 			int coordYDestino) {
 		if (obtuvoObjeto == true) {
+			moverNormal(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
+		}
+	}
+	
+	public static void condicionDescansar(int pPosicionXPersonajeActual, int pPosicionYPersonajeActual, int coordXDestino,
+			int coordYDestino) {
+		if (descansoCampamento == true) {
 			moverNormal(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
 		}
 	}
@@ -606,6 +617,7 @@ public class IU {
 	}
 
 	static boolean obtuvoObjeto = false;
+	static boolean descansoCampamento = false;
 
 	public static void pickUpInventario(Personaje pPersonajeEnJuego, Inventario pObjeto) {
 
@@ -622,5 +634,50 @@ public class IU {
 		System.out.println("Ataque: " + personajeEnJuego.getAtk());
 		System.out.println(" ");
 	}
+	
+	public static void menuCampamento() throws IOException {
+
+		int opcion;
+		opcion = -1;
+
+		out.println("Puedes hacer un campamento aquí");
+		out.println("1. Armar campamento y descansar");
+		out.println("2. Ignorar y continuar");
+		out.print("Digite la opcion" + "\n");
+		opcion = Integer.parseInt(in.readLine());
+		procesarOpcionCampamento(opcion);
+
+	}
+
+	public static void procesarOpcionCampamento(int pOpcion) throws IOException {
+
+		switch (pOpcion) {
+		case 1:
+			accionCampamento();
+			break;
+		case 2:
+			break;
+
+		default:
+			out.println("Opción inválida");
+		}
+	}
+
+
+	public static void accionCampamento() {
+
+		System.out.println(" ");
+		System.out.println("Has armado un campamento: ");
+		descansoCampamento = true;
+		System.out.println("Vida actual: " + personajeEnJuego.getHp_actual());
+		accionSanar();
+	}
+	
+	public static void accionSanar() {
+		personajeEnJuego.restablecerVida();
+		System.out.println("El duelista se ha sanado: ");
+		System.out.println("Vida actual: " +  personajeEnJuego.getHp_actual());
+	}
+
 
 }

@@ -35,6 +35,9 @@ public class Validacion {
 		case "AL":
 			triggerEvento = 10;
 			break;
+		case "+":
+			triggerEvento = 11;
+			break;
 		}
 		return triggerEvento;
 	}
