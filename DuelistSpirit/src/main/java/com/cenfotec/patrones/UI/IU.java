@@ -4,13 +4,11 @@ import java.io.*;
 import java.util.ArrayList;
 
 import com.cenfotec.patrones.armadura.*;
-import com.cenfotec.patrones.armas.Arma;
 import com.cenfotec.patrones.armas.*;
 import com.cenfotec.patrones.enemigo.*;
 import com.cenfotec.patrones.entidades.*;
 import com.cenfotec.patrones.fabricas.*;
 import com.cenfotec.patrones.gestores.*;
-import com.cenfotec.patrones.inventario.Item;
 
 public class IU {
 
@@ -38,7 +36,7 @@ public class IU {
 
 		} while (noSalir);
 
-		out.println("Gracias por usar nuestro sistema, que tenga un buen dia :)");
+		out.println("Solo tú decides tu propio destino.");
 	}
 
 	static void mostrarMenu(String[] plista) {
@@ -176,7 +174,9 @@ public class IU {
 		raza.setId_raza(Integer.parseInt(in.readLine()));
 		if (gr.buscarRaza(raza) != null) {
 			personaje.setRaza(gr.buscarRaza(raza).getNombre());
-
+			personaje.setHp_max(gr.buscarRaza(raza).getHp());
+			personaje.setHp_actual(gr.buscarRaza(raza).getHp());
+			personaje.setAtk(gr.buscarRaza(raza).getAtk());
 		}
 
 		System.out.println("\nRol del duelista: ");
@@ -194,10 +194,6 @@ public class IU {
 		if (gprof.buscarProfesion(profesion) != null) {
 			personaje.setProfesion(gprof.buscarProfesion(profesion).getNombreProfesion());
 		}
-
-		personaje.setHp_max(100);
-		personaje.setHp_actual(100);
-		personaje.setAtk(10);
 		personaje.setNivel(0);
 		personaje.setExp(0);
 
@@ -275,6 +271,7 @@ public class IU {
 			}
 			System.out.println("\nDigite el número de la partida a cargar:");
 			int numeroPartida = Integer.parseInt(in.readLine());
+			obtenerPersonajeCargado(pNombrePersonaje, numeroPartida);
 			mostrarMapaCargado(pNombrePersonaje, numeroPartida);
 		} else {
 			cargarMapaBase(pNombrePersonaje);
@@ -304,6 +301,17 @@ public class IU {
 		if (mapaCargado != null) {
 			imprimirMapa(mapaCargado);
 			mostrarMenuMundo(posicionXActualPersonaje, posicionYActualPersonaje, pNombrePersonaje, mapaCargado);
+		} else {
+			System.out.println("\nNo existe dicha partida.");
+		}
+	}
+
+	public static void obtenerPersonajeCargado(String pNombrePersonaje, int pNumeroPartida) throws Exception {
+		GestorMapa gmapa = FabricaGestores.crearGestorMapa();
+		Personaje personajeCargado = gmapa.cargarPersonaje(pNombrePersonaje, pNumeroPartida);
+
+		if (personajeCargado != null) {
+			personajeEnJuego = personajeCargado;
 		} else {
 			System.out.println("\nNo existe dicha partida.");
 		}
@@ -412,7 +420,7 @@ public class IU {
 		case 8:
 			ArmaduraRegular armadura = new ArmaduraRegular();
 			menuInventario(personajeEnJuego, armadura);
-			condicionAgarre(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);	
+			condicionAgarre(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
 			break;
 		case 9:
 			ArmaduraEpica armadura2 = new ArmaduraEpica();
@@ -425,7 +433,7 @@ public class IU {
 			condicionAgarre(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
 			break;
 		}
-		
+
 	}
 
 	public static void moverNormal(int pPosicionXPersonajeActual, int pPosicionYPersonajeActual, int coordXDestino,
@@ -447,10 +455,10 @@ public class IU {
 			menuInicioSesion();
 		}
 	}
-	
-	public static void condicionAgarre(int pPosicionXPersonajeActual, int pPosicionYPersonajeActual,
-			int coordXDestino, int coordYDestino) {
-		if(obtuvoObjeto == true) {
+
+	public static void condicionAgarre(int pPosicionXPersonajeActual, int pPosicionYPersonajeActual, int coordXDestino,
+			int coordYDestino) {
+		if (obtuvoObjeto == true) {
 			moverNormal(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
 		}
 	}
@@ -458,6 +466,7 @@ public class IU {
 	public static void guardarPartida(String pNombrePersonaje) {
 		GestorMapa gmapa = FabricaGestores.crearGestorMapa();
 		gmapa.guardarPartida(pNombrePersonaje, mapaGenerado);
+		gmapa.guardarJugador(personajeEnJuego);
 	}
 
 	static Enemigo enemigoActual;
@@ -597,6 +606,7 @@ public class IU {
 	}
 
 	static boolean obtuvoObjeto = false;
+
 	public static void pickUpInventario(Personaje pPersonajeEnJuego, Inventario pObjeto) {
 
 		System.out.println(" ");

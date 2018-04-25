@@ -1,6 +1,5 @@
 package com.cenfotec.patrones.armas;
 
-import com.cenfotec.patrones.inventario.Item;
 
 public class Arma {
 	/*public static void armaEpica() {
