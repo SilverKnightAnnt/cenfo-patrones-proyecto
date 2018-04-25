@@ -1,9 +1,13 @@
 package com.cenfotec.patrones.armas;
 
-import com.cenfotec.patrones.inventario.Item;
+import com.cenfotec.patrones.entidades.Inventario;
 
-public class ArmaRegular extends Item {
+public class ArmaRegular extends Inventario {
 	public ArmaRegular() {
+		super("Arma Regular", 0, 5);
+	}
+	
+	/*public ArmaRegular() {
 		description = "";
 	}
 
@@ -15,6 +19,6 @@ public class ArmaRegular extends Item {
 	@Override
 	public double ataque() {
 		return 0;
-	}
+	}*/
 
 }

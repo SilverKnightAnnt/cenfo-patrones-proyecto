@@ -17,6 +17,24 @@ public class Validacion {
 		case "ML":
 			triggerEvento = 4;
 			break;
+		case "WR":
+			triggerEvento = 5;
+			break;
+		case "WE":
+			triggerEvento = 6;
+			break;
+		case "WL":
+			triggerEvento = 7;
+			break;
+		case "AR":
+			triggerEvento = 8;
+			break;
+		case "AE":
+			triggerEvento = 9;
+			break;
+		case "AL":
+			triggerEvento = 10;
+			break;
 		}
 		return triggerEvento;
 	}

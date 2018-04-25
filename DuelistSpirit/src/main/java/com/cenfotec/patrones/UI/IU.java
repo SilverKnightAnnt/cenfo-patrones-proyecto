@@ -3,11 +3,10 @@ package com.cenfotec.patrones.UI;
 import java.io.*;
 import java.util.ArrayList;
 
-import com.cenfotec.patrones.armadura.ArmaduraEpica;
+import com.cenfotec.patrones.armadura.*;
 import com.cenfotec.patrones.armas.Arma;
-import com.cenfotec.patrones.armas.ArmaEpica;
+import com.cenfotec.patrones.armas.*;
 import com.cenfotec.patrones.enemigo.*;
-import com.cenfotec.patrones.enemigoController.Enemy;
 import com.cenfotec.patrones.entidades.*;
 import com.cenfotec.patrones.fabricas.*;
 import com.cenfotec.patrones.gestores.*;
@@ -326,8 +325,7 @@ public class IU {
 			System.out.println("1. Moverse.");
 			System.out.println("2. Guardar partida.");
 			System.out.println("3. Cargar partida.");
-			System.out.println("5. Rejuntar objeto");
-			System.out.println("5. Salir.\n");
+			System.out.println("4. Salir.\n");
 			System.out.println("Seleccione su opción: ");
 			opcion = Integer.parseInt(in.readLine());
 
@@ -342,9 +340,6 @@ public class IU {
 				listarPartidasPersonaje(pPersonajeActual);
 				break;
 			case 4:
-				break;
-			case 5:
-				menuInventario(personajeEnJuego);
 				break;
 			default:
 				out.println("Opción incorrecta.");
@@ -387,31 +382,50 @@ public class IU {
 		case 2:
 			EnemigoRegular enemigo = new EnemigoRegular();
 			peleaEnemigo(enemigo);
-			if(vencio == true) {
-				moverNormal(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
-			}else {
-				menuInicioSesion();
-			}
+			condicionVictoria(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
 			break;
 		case 3:
 			EnemigoEpico enemigo2 = new EnemigoEpico();
 			peleaEnemigo(enemigo2);
-			if(vencio == true) {
-				moverNormal(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
-			}else {
-				menuInicioSesion();
-			}
+			condicionVictoria(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
 			break;
 		case 4:
 			EnemigoLegendario enemigo3 = new EnemigoLegendario();
 			peleaEnemigo(enemigo3);
-			if(vencio == true) {
-				moverNormal(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
-			}else {
-				menuInicioSesion();
-			}
+			condicionVictoria(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
+			break;
+		case 5:
+			ArmaRegular arma = new ArmaRegular();
+			menuInventario(personajeEnJuego, arma);
+			condicionAgarre(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
+			break;
+		case 6:
+			ArmaEpica arma2 = new ArmaEpica();
+			menuInventario(personajeEnJuego, arma2);
+			condicionAgarre(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
+			break;
+		case 7:
+			ArmaLegendaria arma3 = new ArmaLegendaria();
+			menuInventario(personajeEnJuego, arma3);
+			condicionAgarre(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
+			break;
+		case 8:
+			ArmaduraRegular armadura = new ArmaduraRegular();
+			menuInventario(personajeEnJuego, armadura);
+			condicionAgarre(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);	
+			break;
+		case 9:
+			ArmaduraEpica armadura2 = new ArmaduraEpica();
+			menuInventario(personajeEnJuego, armadura2);
+			condicionAgarre(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
+			break;
+		case 10:
+			ArmaduraLegendaria armadura3 = new ArmaduraLegendaria();
+			menuInventario(personajeEnJuego, armadura3);
+			condicionAgarre(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
 			break;
 		}
+		
 	}
 
 	public static void moverNormal(int pPosicionXPersonajeActual, int pPosicionYPersonajeActual, int coordXDestino,
@@ -424,11 +438,30 @@ public class IU {
 
 	}
 
+	public static void condicionVictoria(int pPosicionXPersonajeActual, int pPosicionYPersonajeActual,
+			int coordXDestino, int coordYDestino) throws Exception {
+
+		if (vencio == true) {
+			moverNormal(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
+		} else {
+			menuInicioSesion();
+		}
+	}
+	
+	public static void condicionAgarre(int pPosicionXPersonajeActual, int pPosicionYPersonajeActual,
+			int coordXDestino, int coordYDestino) {
+		if(obtuvoObjeto == true) {
+			moverNormal(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
+		}
+	}
+
 	public static void guardarPartida(String pNombrePersonaje) {
 		GestorMapa gmapa = FabricaGestores.crearGestorMapa();
 		gmapa.guardarPartida(pNombrePersonaje, mapaGenerado);
 	}
+
 	static Enemigo enemigoActual;
+
 	public static void peleaEnemigo(Enemigo enemigo) throws Exception {
 		int opc;
 		boolean noSalir = true;
@@ -462,7 +495,7 @@ public class IU {
 		switch (popcion) {
 
 		case 1:
-			Combate(personajeEnJuego,enemigoActual);
+			Combate(personajeEnJuego, enemigoActual);
 			break;
 
 		case 2:
@@ -483,7 +516,7 @@ public class IU {
 		return noSalir;
 	}
 
-	public static void Combate(Personaje pPersonajeEnJuego,Enemigo enemigo) {		
+	public static void Combate(Personaje pPersonajeEnJuego, Enemigo enemigo) {
 
 		do {
 			cambioTurno(pPersonajeEnJuego, enemigo);
@@ -511,7 +544,9 @@ public class IU {
 		}
 
 	}
+
 	static boolean vencio = false;
+
 	public static boolean isCombateActivo(Personaje personaje, Enemigo enemigo) {
 		if (personaje.isAlive() && enemigo.isAlive()) {
 			return true;
@@ -530,13 +565,15 @@ public class IU {
 		}
 	}
 
-	public static void menuInventario(Personaje pPersonajeEnJuego) throws IOException {
-		ArmaEpica armaEpica = new ArmaEpica();
+	static Inventario objetoActual;
+
+	public static void menuInventario(Personaje pPersonajeEnJuego, Inventario pObjetoActual) throws IOException {
 
 		int opcion;
 		opcion = -1;
 
-		out.println("Has encontrado: " + armaEpica.getNombre() + "\n");
+		out.println("Has encontrado: " + pObjetoActual.getNombre() + "\n");
+		objetoActual = pObjetoActual;
 		out.println("1. Agregar al inventario");
 		out.println("2. Ignorar y continuar");
 		out.print("Digite la opcion" + "\n");
@@ -549,7 +586,7 @@ public class IU {
 
 		switch (pOpcion) {
 		case 1:
-			pickUpInventario(personajeEnJuego);
+			pickUpInventario(personajeEnJuego, objetoActual);
 			break;
 		case 2:
 			break;
@@ -559,13 +596,13 @@ public class IU {
 		}
 	}
 
-	public static void pickUpInventario(Personaje pPersonajeEnJuego) {
+	static boolean obtuvoObjeto = false;
+	public static void pickUpInventario(Personaje pPersonajeEnJuego, Inventario pObjeto) {
 
-		ArmaEpica armaEpica = new ArmaEpica();
 		System.out.println(" ");
-		System.out.println("Has obtenido: " + armaEpica.getNombre());
-
-		accionPickUp(pPersonajeEnJuego, armaEpica);
+		System.out.println("Has obtenido: " + pObjeto.getNombre());
+		obtuvoObjeto = true;
+		accionPickUp(pPersonajeEnJuego, pObjeto);
 
 	}
 

@@ -1,10 +1,13 @@
 package com.cenfotec.patrones.armadura;
 
-import com.cenfotec.patrones.inventario.Item;
+import com.cenfotec.patrones.entidades.Inventario;
 
-public class ArmaduraRegular extends Item{
-	
+public class ArmaduraRegular extends Inventario{
 	public ArmaduraRegular() {
+		super("Armadura Regular", 10, 0);
+	}
+	
+	/*public ArmaduraRegular() {
 		description = "";
 	}
 
@@ -16,6 +19,6 @@ public class ArmaduraRegular extends Item{
 	@Override
 	public double ataque() {
 		return 0;
-	}
+	}*/
 
 }
