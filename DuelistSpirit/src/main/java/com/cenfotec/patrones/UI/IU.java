@@ -415,17 +415,17 @@ public class IU {
 			moverNormal(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
 			break;
 		case 2:
-			EnemigoRegular enemigo = new EnemigoRegular();
+			EnemigoRegular enemigo = FabricaEnemigos.crearEnemigoRegular();
 			peleaEnemigo(enemigo);
 			condicionVictoria(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
 			break;
 		case 3:
-			EnemigoEpico enemigo2 = new EnemigoEpico();
+			EnemigoEpico enemigo2 = FabricaEnemigos.crearEnemigoEpico();
 			peleaEnemigo(enemigo2);
 			condicionVictoria(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
 			break;
 		case 4:
-			EnemigoLegendario enemigo3 = new EnemigoLegendario();
+			EnemigoLegendario enemigo3 = FabricaEnemigos.crearEnemigoLegendario();
 			peleaEnemigo(enemigo3);
 			condicionVictoria(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
 			if(vencio == true) {
@@ -434,32 +434,32 @@ public class IU {
 			}
 			break;
 		case 5:
-			ArmaRegular arma = new ArmaRegular();
+			ArmaRegular arma = FabricaInventario.crearArmaRegular();
 			menuInventario(personajeEnJuego, arma);
 			condicionAgarre(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
 			break;
 		case 6:
-			ArmaEpica arma2 = new ArmaEpica();
+			ArmaEpica arma2 = FabricaInventario.crearArmaEpica();
 			menuInventario(personajeEnJuego, arma2);
 			condicionAgarre(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
 			break;
 		case 7:
-			ArmaLegendaria arma3 = new ArmaLegendaria();
+			ArmaLegendaria arma3 = FabricaInventario.crearArmaLegendaria();
 			menuInventario(personajeEnJuego, arma3);
 			condicionAgarre(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
 			break;
 		case 8:
-			ArmaduraRegular armadura = new ArmaduraRegular();
+			ArmaduraRegular armadura = FabricaInventario.crearArmaduraRegular();
 			menuInventario(personajeEnJuego, armadura);
 			condicionAgarre(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
 			break;
 		case 9:
-			ArmaduraEpica armadura2 = new ArmaduraEpica();
+			ArmaduraEpica armadura2 = FabricaInventario.crearArmaduraEpica();
 			menuInventario(personajeEnJuego, armadura2);
 			condicionAgarre(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
 			break;
 		case 10:
-			ArmaduraLegendaria armadura3 = new ArmaduraLegendaria();
+			ArmaduraLegendaria armadura3 = FabricaInventario.crearArmaduraLegendaria();
 			menuInventario(personajeEnJuego, armadura3);
 			condicionAgarre(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
 			break;
