@@ -712,11 +712,6 @@ public class IU {
 		System.out.println("\nFrente a tí hay una montaña, por ende no puedes avanzar.\n");
 	}
 
-	public static void menuMontanna() {
-
-		System.out.println("\nFrente a tí hay una montaña, por ende no puedes avanzar.\n");
-	}
-
 	public static void menuBarrera(int pPosicionXPersonajeActual, int pPosicionYPersonajeActual, int coordXDestino,
 			int coordYDestino) {
 		if (personajeEnJuego.getNivel() >= 10) {
