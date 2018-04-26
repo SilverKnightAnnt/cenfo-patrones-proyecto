@@ -295,7 +295,6 @@ public class IU {
 	static int posicionYActualPersonaje = -1;
 
 	public static void imprimirMapa(String[][] mapaPorImprimir) {
-
 		System.out.println("\nMisiones:");
 		System.out.println("1. Obtener el arma legendaria.");
 		System.out.println("2. Obtener la armadura legendaria (Debes ser al menos nivel 10)");
@@ -378,7 +377,7 @@ public class IU {
 			}
 		} while (opcion != 5);
 	}
-
+  
 	static void verEstadisticas() {
 		System.out.println(personajeEnJuego.estadisticas());
 	}
@@ -428,7 +427,7 @@ public class IU {
 			EnemigoLegendario enemigo3 = FabricaEnemigos.crearEnemigoLegendario();
 			peleaEnemigo(enemigo3);
 			condicionVictoria(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
-			if (vencio == true) {
+			if(vencio == true) {
 				System.out.println("!FELICIDADES¡ Has ganado el juego.");
 				menuInicioSesion();
 			}
@@ -501,7 +500,7 @@ public class IU {
 			moverNormal(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
 		}
 	}
-
+  
 	public static void guardarPartida(String pNombrePersonaje) {
 		GestorMapa gmapa = FabricaGestores.crearGestorMapa();
 		gmapa.guardarPartida(pNombrePersonaje, mapaGenerado);
@@ -706,6 +705,11 @@ public class IU {
 		personajeEnJuego.restablecerVida();
 		System.out.println("El duelista se ha sanado: ");
 		System.out.println("Vida actual: " + personajeEnJuego.getHp_actual());
+	}
+	
+	public static void menuMontanna() {
+		
+		System.out.println("\nFrente a tí hay una montaña, por ende no puedes avanzar.\n");
 	}
 
 	public static void menuMontanna() {
