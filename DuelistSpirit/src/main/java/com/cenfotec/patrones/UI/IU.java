@@ -170,14 +170,14 @@ public class IU {
 		System.out.println("2. Femenino.");
 		System.out.println("Seleccione el género:");
 		int gener = Integer.parseInt(in.readLine());
-		switch(gener) {
+		switch (gener) {
 		case 1:
 			personaje.setGenero("Masculino");
 			break;
 		case 2:
 			personaje.setGenero("Femenino");
 			break;
-		default: 
+		default:
 			System.out.println("Opción incorrecta.");
 			break;
 		}
@@ -295,7 +295,6 @@ public class IU {
 	static int posicionYActualPersonaje = -1;
 
 	public static void imprimirMapa(String[][] mapaPorImprimir) {
-		
 		System.out.println("\nMisiones:");
 		System.out.println("1. Obtener el arma legendaria.");
 		System.out.println("2. Obtener la armadura legendaria (Debes ser al menos nivel 10)");
@@ -378,7 +377,7 @@ public class IU {
 			}
 		} while (opcion != 5);
 	}
-	
+  
 	static void verEstadisticas() {
 		System.out.println(personajeEnJuego.estadisticas());
 	}
@@ -501,7 +500,7 @@ public class IU {
 			moverNormal(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
 		}
 	}
-	
+  
 	public static void guardarPartida(String pNombrePersonaje) {
 		GestorMapa gmapa = FabricaGestores.crearGestorMapa();
 		gmapa.guardarPartida(pNombrePersonaje, mapaGenerado);
@@ -575,18 +574,18 @@ public class IU {
 	public static void cambioTurno(Personaje personaje, Enemigo enemigo) {
 
 		if (personaje.getHp_actual() >= enemigo.getHp_actual()) {
-			System.out.println("Has atacado a " + enemigo.getTipo() + " " + personaje.getHp_actual());
+			System.out.println("Has atacado a " + enemigo.getTipo() + " | Vida del enemigo: " + enemigo.getHp_actual());
 			enemigo.quitarVida(personaje.getAtk());
 
 			if (enemigo.isAlive()) {
-				System.out.println(enemigo.getTipo() + "El enemigo ataca de vuelta!" + enemigo.getHp_actual());
+				System.out.println("El " + enemigo.getTipo() + " ataca de vuelta! |" + " Vida: " + personaje.getHp_actual());
 				personaje.quitarVida(enemigo.getAtk());
 			}
 		} else {
-			System.out.println("El enemigo te ha atacado " + personaje.getHp_actual());
+			System.out.println("El " + enemigo.getTipo() + " te ha atacado. |" + " Vida: " + personaje.getHp_actual());
 			personaje.quitarVida(enemigo.getAtk());
 			if (personaje.isAlive()) {
-				System.out.println("Has atacado devuelta a: " + enemigo.getTipo() + "" + enemigo.getHp_actual());
+				System.out.println("Has atacado devuelta a: " + enemigo.getTipo() + " | Vida del enemigo: " + enemigo.getHp_actual());
 				enemigo.quitarVida(personaje.getAtk());
 			}
 		}
@@ -664,7 +663,7 @@ public class IU {
 		System.out.println("Ataque: " + personajeEnJuego.getAtk());
 		System.out.println(" ");
 	}
-	
+
 	public static void menuCampamento() throws IOException {
 
 		int opcion;
@@ -693,7 +692,6 @@ public class IU {
 		}
 	}
 
-
 	public static void accionCampamento() {
 
 		System.out.println(" ");
@@ -702,11 +700,11 @@ public class IU {
 		System.out.println("Vida actual: " + personajeEnJuego.getHp_actual());
 		accionSanar();
 	}
-	
+
 	public static void accionSanar() {
 		personajeEnJuego.restablecerVida();
 		System.out.println("El duelista se ha sanado: ");
-		System.out.println("Vida actual: " +  personajeEnJuego.getHp_actual());
+		System.out.println("Vida actual: " + personajeEnJuego.getHp_actual());
 	}
 	
 	public static void menuMontanna() {
@@ -714,11 +712,16 @@ public class IU {
 		System.out.println("\nFrente a tí hay una montaña, por ende no puedes avanzar.\n");
 	}
 
+	public static void menuMontanna() {
+
+		System.out.println("\nFrente a tí hay una montaña, por ende no puedes avanzar.\n");
+	}
+
 	public static void menuBarrera(int pPosicionXPersonajeActual, int pPosicionYPersonajeActual, int coordXDestino,
 			int coordYDestino) {
-		if(personajeEnJuego.getNivel() >= 10) {
+		if (personajeEnJuego.getNivel() >= 10) {
 			moverNormal(pPosicionXPersonajeActual, pPosicionYPersonajeActual, coordXDestino, coordYDestino);
-		}else {
+		} else {
 			System.out.println("No eres lo suficientemente poderoso para atravesar la barrera.");
 		}
 	}
